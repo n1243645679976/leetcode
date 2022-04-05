@@ -23,7 +23,6 @@ class Solution:
         BIT1, BIT2, ans = BIT(n), BIT(n), 0
         for i in arr:
             ans += BIT2.query(i)
-            # 找比較小的話: i + 1
             BIT1.update(i + 1, 1)
             less = BIT1.query(i)
             BIT2.update(i + 1, less)
