@@ -1,18 +1,34 @@
+# TLE -> update, query 數值錯了, < 0
 class BIT:
     def __init__(self, n):
-        self.sums = [0] * (n+1)
+        # valid input: [0, n]
+        self.sums = [0] * (n+3)
     
     def update(self, i, delta):
+        # update >=i with delta
+        i += 2
         while i < len(self.sums):
             self.sums[i] += delta
             i += i & (-i)
     
     def query(self, i):
+        # get (0, i]
+        i += 2
         res = 0
         while i > 0:
             res += self.sums[i]
             i -= i & (-i)
         return res
+        
+    def update_interval(self, a, b, delta):
+        # update [b, a]
+        self.update(a+1, -delta)
+        self.update(b, delta)
+    def query_interval(self, a, b):
+        # query [b, a]
+        # b should >= 1
+        return self.query(a) - self.query(b-1)
+    
 
 class Solution:
     def goodTriplets(self, A, B):

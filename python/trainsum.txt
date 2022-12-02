@@ -1,0 +1,14 @@
+def triansum(c, i, j, pref=None, ppref=None):
+    # triansum [i, j]
+    # return (j-i+1)*i + (j-i+2)*(i-1) + ... j * 1
+    if pref == None:
+        pref = [0]
+        for cc in c:
+            pref.append(pref[-1] + cc)
+    if ppref == None:
+        ppref = [0]
+        for cc in pref:
+            ppref.append(ppref[-1] + cc)
+        ppref.pop(0)
+    print(pref, ppref)
+    return ppref[j+1] - ppref[i] - (j + 1 - i) * pref[i]
