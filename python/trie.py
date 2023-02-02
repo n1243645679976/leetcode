@@ -1,48 +1,41 @@
-class Trie():
+class Trie:
     def __init__(self):
-        self.root = {}
-    
-    def update(self, w):
-        node = self.root
-        for i, c in enumerate(w):
-            node = node.setdefault(c, {})
-            node.setdefault('ans', 0)
-            node['ans'] += 1
+        self.trie = lambda: defaultdict(Trie)
+    def insert(self, word):
+        trie = self.trie
+        for w in word:
+            trie = trie[w]
+    def search(self, word):
+        trie = self.trie
+        for w in word:
+            if w not in trie:
+                return -1
         
-    def search(self, w):
-        node = self.root
-        ans = 0
-        for i, c in enumerate(w):
-            if c not in node:
-                break
-            node = node[c]
-            ans += node.get('ans', 0)
-        return ans
-                
+        
+class TrieNode:
+    def __init__(self):
+        self.isWord = False
+        self.next = {}
 
-class TrieNode():
+class Trie:
     def __init__(self):
-        self.children = {}
-        self.refs = 0
-        self.wordind = -1
-    
-    def update(self, w, wordind):
-        # w: iter(word)
-        c = next(w, None)
-        if c == None:
-            self.wordind = wordind
-            return
-        elif c not in self.children:
-            self.children[c] = TrieNode()
-        self.refs += 1
-        self.children[c].update(w, wordind)
-        
-    def removeword(self, w):
-        # w: iter(word)
-        c = next(w, None)
-        if c == None:
-            self.wordind = -1
-            return
-        self.refs -= 1
-        self.children[c].removeword(w)
-        
+        self.root = TrieNode()        
+
+    def insert(self, word):
+        n = self.root
+        for i in word:
+            if i not in n.next:
+                n.next[i] = TrieNode()
+            n = n.next[i]
+        n.isWord = True        
+
+    def search(self, word: str) -> bool:
+        n = self.root
+        ans = 0
+        for i in word:
+            if i not in n.next:
+                return ans
+            else:
+                ans += 1
+                n = n.next[i]
+        return ans

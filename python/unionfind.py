@@ -10,6 +10,14 @@ class UnionFind():
         else:
             self.parent[a] = self.find(self.parent[a])
             return self.parent[a]
+    def maxunion(self):
+        mac = 0
+        count = Counter()
+        for i in self.parent:
+            self.find(i)
+            count[self.parent[i]] += 1
+            mac = max(mac, count[self.parent[i]])
+        return mac
 
 class UnionFind():
     def __init__(self):
@@ -23,3 +31,11 @@ class UnionFind():
         if self.parent[a] != a:
             self.parent[a] = self.find(self.parent[a])
         return self.parent[a]
+    def maxunion(self):
+        mac = 0
+        count = Counter()
+        for i in self.parent:
+            self.find(i)
+            count[self.parent[i]] += 1
+            mac = max(mac, count[self.parent[i]])
+        return mac
