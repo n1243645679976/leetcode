@@ -7,16 +7,12 @@ def getints():
 def getfloats():
     return list(map(float, input().split()))
 
-
+from XOR_basis import XOR_basis
 T = getint()
 for i in range(T):
     n = getint()
-    s = input()
-    quest = []
-    for c in s:
-        if c == 'Q':
-            quest.append('Q')
-        if c == 'A':
-            if quest:
-                quest.pop()
-    print('Yes' if len(quest) == 0 else 'No')
+    xor = XOR_basis()
+    g = getints()
+    for i in g:
+        xor.insertVector(i)
+    print(xor.findMax())

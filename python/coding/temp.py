@@ -42,17 +42,6 @@ def inv(a):
 from collections import deque
 T = getint()
 for _t in range(T):
-    n, m = getints()
-    mat = [getints() for j in range(n)]
-    remains = deque(list(range(n)))
-    ans = [0 for i in range(n)]
-    trie = Trie()
+    n, m1, m2 = getints()
     
-    for m in mat:
-        trie.insert(inv(m))
-    for i in range(n):
-        ans[i] = trie.search(mat[i])
-    print(' '.join(map(str, ans)))
-        
-                
         
