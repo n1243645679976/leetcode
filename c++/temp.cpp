@@ -1,60 +1,109 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define ll long long
-#include<iostream>
-using namespace std;
-#define mod 998244353 
-#define N 1000005
- 
-template<int MOD>
-struct ModInt {
-  unsigned x;
-  ModInt() : x(0) { }
-  ModInt(signed sig) : x(sig) {  }
-  ModInt(signed long long sig) : x(sig%MOD) { }
-  int get() const { return (int)x; }
-  ModInt pow(ll p) { ModInt res = 1, a = *this; while (p) { if (p & 1) res *= a; a *= a; p >>= 1; } return res; }
- 
-  ModInt &operator+=(ModInt that) { if ((x += that.x) >= MOD) x -= MOD; return *this; }
-  ModInt &operator-=(ModInt that) { if ((x += MOD - that.x) >= MOD) x -= MOD; return *this; }
-  ModInt &operator*=(ModInt that) { x = (unsigned long long)x * that.x % MOD; return *this; }
-  ModInt &operator/=(ModInt that) { return (*this) *= that.pow(MOD - 2); }
- 
-  ModInt operator+(ModInt that) const { return ModInt(*this) += that; }
-  ModInt operator-(ModInt that) const { return ModInt(*this) -= that; }
-  ModInt operator*(ModInt that) const { return ModInt(*this) *= that; }
-  ModInt operator/(ModInt that) const { return ModInt(*this) /= that; }
-  bool operator<(ModInt that) const { return x < that.x; }
-  friend ostream& operator<<(ostream &os, ModInt a) { os << a.x; return os; }
-};
-typedef ModInt<998244353> mint;
- 
-mint a[N], b[N], c[N], d[N];
-void answer(){
-    signed ll n;
-    vector<mint> vll;
-    int d = 0;
-    string s1, s2;
-    cin>>n;
-    cin>>s1>>s2;
-    for(int i=0;i<n;i++){
-        d += s1[i] != s2[i];
-    }
-    vll.push_back(0);
-    vll.push_back(mint(2).pow(n) - 1);
-    for(int i=2;i<=d;i++){
-        
-        mint c = ((vll[i-1] * n - n) - vll[i-2] * (i-1)) / (n-i+1);
-        vll.push_back(c);
-    }
-    cout<<vll[d]<<endl;
 
+void print(){cout<<'\n';}
+
+template<typename T>
+void print(const T t)
+{
+    cout<<t<<endl;
 }
-int main(){
+template<typename T, typename ...TAIL>
+void print(const T &t, TAIL... tail)
+{
+    cout<<t<<' ';
+    print(tail...);
+}
+void __print(int x) {cout << x;}
+void __print(long x) {cout << x;}
+void __print(long long x) {cout << x;}
+void __print(unsigned x) {cout << x;}
+void __print(unsigned long x) {cout << x;}
+void __print(unsigned long long x) {cout << x;}
+void __print(float x) {cout << x;}
+void __print(double x) {cout << x;}
+void __print(long double x) {cout << x;}
+void __print(char x) {cout << '\'' << x << '\'';}
+void __print(const char *x) {cout << '\"' << x << '\"';}
+void __print(const string &x) {cout << '\"' << x << '\"';}
+void __print(bool x) {cout << (x ? "true" : "false");}
+
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cout << '{'; for (auto &i: x) cout << (f++ ? ", " : ""), __print(i); cout << "}";}
+void _print() {cout << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cout << ", "; _print(v...);}
+#define DEBUG
+#ifdef DEBUG
+#define dbg(x...) cout << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;
+#else
+#define dbg(x...)
+#endif
+
+
+struct UnionFind {
+    vector<int> par;
+
+    UnionFind(int N) : par(N) {
+        for(int i = 0; i < N; i++) par[i] = i;
+    }
+
+    int root(int x) {
+        if (par[x] == x) return x;
+        return par[x] = root(par[x]);
+    }
+
+    void unite(int x, int y) {
+        int rx = root(x);
+        int ry = root(y);
+        if (rx == ry) return;
+        par[rx] = ry;
+    }
+
+    bool same(int x, int y) {
+        int rx = root(x);
+        int ry = root(y);
+        return rx == ry;
+    }
+};
+void answer(){  
+    int n;
+    map<int, map<int, long long>> counter;
+    cin>>n;
+    string s;
+    long long  ans=0;
+    for(int j=0;j<n;j++){
+        cin>>s;
+        int bit = 0;
+        int count = 0, ls=s.length();
+        for(int i=0;i<ls;i++){
+            bit |= 1 << (s[i] - 97);
+            count ^= 1 << (s[i] - 97);
+        }
+        // exclude "a" > 0
+        int mask = 1<<26;
+        mask--;
+        for(int i=0;i<26;i++){
+            if(!(bit & (1<<i))){
+                counter[i][count] += 1;
+                ans += counter[i][(count^mask) & ((~(1<<i)) & mask)];
+            }
+        }
+
+    }
+    print(ans);
+}
+int main(){ios::sync_with_stdio(false);
+  cin.tie(0);
     int T;
-    cin>>T;
-    for(int i=0;i<T;i++){
+    T=0;
+    //T = 1;
+    //cin>>T;
+    for(int i=0;i<0;i++){
         answer();
     }
+    answer();
 }

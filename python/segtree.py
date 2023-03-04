@@ -45,6 +45,7 @@ class segtree():
         else:
             mid = (cl + cr) // 2
             self._plus_max_proplazy(ind)
+            # 不要複寫self.tree[ind], 因為(cl, cr)不一定是ind的所有範圍
             return max(self._plus_max_query(ind*2, ul, ur, cl, mid), self._plus_max_query(ind*2+1, ul, ur, mid+1, cr))
          
     def _set_max_proplazy(self, ind):
@@ -76,6 +77,7 @@ class segtree():
         else:
             mid = (cl + cr) // 2
             self._set_max_proplazy(ind)
+            # 不要複寫self.tree[ind], 因為(cl, cr)不一定是ind的所有範圍
             return max(self._set_max_query(ind*2, ul, ur, cl, mid), self._set_max_query(ind*2+1, ul, ur, mid+1, cr))
         
 # update one point, query an interval
