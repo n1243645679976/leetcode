@@ -1,15 +1,22 @@
 class Trie:
     def __init__(self):
-        self.trie = lambda: defaultdict(Trie)
+        _trie = lambda: defaultdict(_trie)
+        self.trie = _trie()
     def insert(self, word):
         trie = self.trie
         for w in word:
             trie = trie[w]
+        trie['#']
     def search(self, word):
+        return self.startsWith(word + '#')
+    def startsWith(self, word):
         trie = self.trie
         for w in word:
             if w not in trie:
-                return -1
+                return False
+            trie = trie[w]
+        return True
+
         
         
 class TrieNode:
