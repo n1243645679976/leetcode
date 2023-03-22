@@ -1,4 +1,3 @@
-
 template<typename T> class UnionFind{
 public:
     unordered_map<T, T> parent;
@@ -8,7 +7,7 @@ public:
 template<typename T> void UnionFind<T>::unite(T a, T b){
     auto fa = find(a), fb = find(b);
     if(fa != fb){
-        parent[b] = parent[fa];
+        parent[fb] = parent[fa];
     }
 }
 template<typename T> T UnionFind<T>::find(T a){
