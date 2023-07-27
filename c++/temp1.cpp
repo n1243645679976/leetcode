@@ -76,66 +76,151 @@ void _println(T t, V... v) {__print(t); if (sizeof...(v)) cout << " "; _println(
 #define coutf(a) cout<<a<<endl; cout.flush();
 const int dirs[8][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}}; // use dirs[:4] for 4 dir
 
-// __int128
 ostream& operator<<(ostream& a, __int128 out){if(out < 0) {a<<"-"; a << -out;} else {if(out > 9) a<<out/10; a<< int(out%10);} return a;}
-istream& operator>>(istream& a, __int128& out){string l; cin>>l; trav(l) out *= 10, out += l - 48; return a;}
-__int128 max(__int128 a, __int128 b){
-  if(a > b) return a;
-  else return b;
-}
-__int128 min(__int128 a, __int128 b){
-  if(a < b) return a;
-  else return b;
-}
 
 mt19937_64 gen(chrono::steady_clock::now().time_since_epoch().count());
 uniform_int_distribution<ll> rnd(0,LLONG_MAX); //usage: long long xx = rnd(gen);
+template<int MOD>
+struct ModInt {
+  unsigned x;
+  vector<ModInt<MOD>> Comb;
+  vector<ModInt<MOD>> Perm;
+  vector<ModInt<MOD>> Fact;
+  ModInt() : x(0) { }
+  ModInt(signed sig) : x(((sig)%MOD+MOD)%MOD) {}
+  void setComb(int n){
+      ModInt<MOD> c0 = 1;
 
-
-using i64 = long long;
-#define MULTIINPUT
-int solve() {
-    int n, k;
-    std::cin >> n >> k;
-    
-    std::vector<int> a(n + 2);
-    std::priority_queue<i64, std::vector<i64>, std::greater<i64>> q;
-    i64 add = 0;
-    for (int i = 1; i <= n; i++) {
-        std::cin >> a[i];
-        if (a[i] == k) {
-            a[i] = 0;
-        }
-    }
-    
-    i64 ans = 0;
-    int p = 0;
-    for (int i = 1; i <= n + 1; i++) {
-        if (a[i] >= a[i - 1]) {
-            q.push(a[i] - a[i - 1]);
-        } else {
-            q.push(0);
-            q.push(k + a[i] - a[i - 1]);
-        }
-        
-        ans += q.top();
-        q.pop();
-        
-    }
-    
-    std::cout << ans << "\n";
-    return -2;
-}
+      for(int i=0;i<=n;i++){
+          Comb.push_back(c0);
+          c0 *= (n-i);
+          c0 /= (i+1);
+      }
+  }
+  void setPerm(int n){
+      ModInt<MOD> p0 = 1;
+      for(int i=0;i<=n;i++){
+          Perm.push_back(p0);
+          p0 *= (n-i);
+      }
+  }
+  void setFact(int n){
+      ModInt<MOD> f0 = 1;
+      for(int i=1;i<=n;i++){
+          Fact.push_back(f0);
+          f0 *= i;
+      }
+  }
+  ModInt(signed long long sig) : x(((sig)%MOD+MOD)%MOD) { }
+  int get() const { return (int)x; }
+  ModInt pow(ll p) { ModInt res = 1, a = *this; while (p) { if (p & 1) res *= a; a *= a; p >>= 1; } return res; }
  
+  ModInt &operator+=(ModInt that) { if ((x += that.x) >= MOD) x -= MOD; return *this; }
+  ModInt &operator-=(ModInt that) { if ((x += MOD - that.x) >= MOD) x -= MOD; return *this; }
+  ModInt &operator*=(ModInt that) { x = (unsigned long long)x * that.x % MOD; return *this; }
+  ModInt &operator/=(ModInt that) { return (*this) *= that.pow(MOD - 2); }
+ 
+  ModInt operator+(ModInt that) const { return ModInt(*this) += that; }
+  ModInt operator-(ModInt that) const { return ModInt(*this) -= that; }
+  ModInt operator*(ModInt that) const { return ModInt(*this) *= that; }
+  ModInt operator/(ModInt that) const { return ModInt(*this) /= that; }
+  bool operator<(ModInt that) const { return x < that.x; }
+  friend ostream& operator<<(ostream &os, ModInt a) { os << a.x; return os; }
+};
+typedef ModInt<1000000007> mint17;    
+typedef ModInt<998244353> mint93;
+class BIT{
+public:
+    int _max, _min;
+    vector<int> c;
+    BIT(int __max, int __min = 0){
+        _max = __max + 2 + __min;
+        _min = __min; // serve as offset
+        c.reserve(_max);
+        for(int i = 0;i<_max;i++){
+            c[i] = 0;
+        }
+    }
+    void update(int i, int v){
+        i += 2 + _min;
+        while(i < _max){
+            c[i] += v;
+            i += i & (-i);
+        }
+    }
+    int query(int i){
+        int ans = 0;
+        i += 2 + _min;
+        while(i > 0){
+            ans += c[i];
+            i -= i & (-i);
+        }
+        return ans;
+    }
+};
+struct UnionFind {
+    vector<int> par;
+    vector<int> size;
+    UnionFind(int N) : par(N), size(N) {
+        for(int i = 0; i < N; i++) par[i] = i, size[i] = 1;
+    }
 
+    int find(int x) {
+        if (par[x] == x) return x;
+        return par[x] = find(par[x]);
+    }
+
+    void unite(int x, int y) {
+        int rx = find(x);
+        int ry = find(y);
+        if (rx == ry) return;
+        par[rx] = max(rx, ry);
+        par[ry] = max(rx, ry);
+        size[ry] += size[rx];
+    }
+
+    bool same(int x, int y) {
+        int rx = find(x);
+        int ry = find(y);
+        return rx == ry;
+    }
+};
+
+
+int solve(){
+  int n; cin>>n;
+  vi a(n); trav(a) cin>>a;
+  vi b(n); trav(b) cin>>b;
+  vi count(3);
+  
+  F0R(i, n){
+    set<pair<int, int>> r;
+    int aa = a[i], bb = b[i];
+    if(aa == 0 && bb == 0) {
+      count[0]++, count[1]++, count[2]++;
+      continue;
+    }
+    while(aa != 0 && bb != 0 && aa != bb){
+      if(aa >= bb * 2) {aa %= bb * 2; continue;}
+      if(bb >= aa * 2) {bb %= aa * 2; continue;}
+      if(r.count({aa, bb})) return false;
+      r.insert({aa, bb});
+      if(aa > bb) aa = 2 * bb - aa;
+      else bb = 2 * aa - bb;
+    }
+    if(aa == 0) count[0] += 1;
+    else if(bb == 0) count[1] += 1;
+    else count[2] += 1;
+  }
+  F0R(i, 3) if(count[i] == n) return true;
+  return false;
+}
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 	int T = 1;
-    #ifdef MULTIINPUT
 	cin >> T;
-    #endif
 	while (T--) {
 		int q = solve();
 		if(q == 0) cout<<"No"<<endl;

@@ -1,9 +1,11 @@
 class UnionFind():
     def __init__(self, n):
         self.parent = [i for i in range(n)]
-    def union(self, a, b):
+    def unite(self, a, b):
         if self.find(a) != self.find(b):
-            self.parent[self.parent[b]] = self.parent[a]
+            mx = max(self.parent[a], self.parent[b])
+            self.parent[self.parent[b]] = mx
+            self.parent[self.parent[a]] = mx
     def find(self, a):
         if self.parent[a] == a:
             return a
@@ -22,7 +24,7 @@ class UnionFind():
 class UnionFind():
     def __init__(self):
         self.parent = {}
-    def union(self, a, b):
+    def unite(self, a, b):
         if self.find(a) != self.find(b):
             self.parent[self.parent[b]] = self.parent[a]
     def find(self, a):

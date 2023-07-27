@@ -4,7 +4,6 @@
 #4. 由value取得key, while stack最上方>=此key, 則stack最上方的key對應到現在的key, 並pop掉
 #5. 最後留在stack的都賦予最後值
 
-from sortedcontainers import SortedList
 
 def get_after_kth_lt_ind(arr, k, init_value=None):
     if init_value == None:

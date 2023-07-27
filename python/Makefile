@@ -7,3 +7,6 @@ ans: temp.py
 	
 test:
 	python t_generate_test.py > test.txt
+
+input:
+	python temp.py
