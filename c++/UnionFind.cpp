@@ -9,7 +9,10 @@ template<typename T> void UnionFind<T>::unite(T a, T b){
     auto fa = find(a), fb = find(b);
     if(fa != fb){
         parent[fb] = parent[fa];
+<<<<<<< HEAD
         size[fa] += size[fb];
+=======
+>>>>>>> 157907980f69c6c0ac2bf16e5b661821f55afbac
     }
 }
 template<typename T> T UnionFind<T>::find(T a){
