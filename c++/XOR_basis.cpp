@@ -1,4 +1,4 @@
-const int d = 31;
+const int _xor_dim= 31;
 struct XOR_BASIS {
     int basis[d] = {0};
     int sz;

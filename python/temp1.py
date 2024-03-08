@@ -1,3 +1,14 @@
+
+from itertools import tee, combinations
+from heapq import heappush, heappop
+from collections import defaultdict, Counter, deque
+from sys import stdout
+import math
+import sys
+sys.setrecursionlimit(100000)
+def printf(*args):
+    print(*args)
+    stdout.flush()
 new_input = False
 if new_input:
     import io,os
@@ -30,15 +41,9 @@ else:
     def getstr():
         return input()
 
-from sys import stdout
-def printf(*args):
-    print(*args)
-    stdout.flush()
+inf = float('inf')
     
 class groupby:
-    # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
-    # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
-
     def __init__(self, iterable, key=None):
         if key is None:
             key = lambda x: x
@@ -65,62 +70,14 @@ class groupby:
             except StopIteration:
                 return
             self.currkey = self.keyfunc(self.currvalue)
-from itertools import tee
-from heapq import heappush, heappop
-from collections import defaultdict, Counter, deque
-import math
-import sys
-    
-sys.setrecursionlimit(100000)
 
-def pairwise(iterable):
-    # pairwise('ABCDEFG') --> AB BC CD DE EF FG
-    a, b = tee(iterable)
-    next(b, None)
-    return zip(a, b)
+def pairwise(iterable): a, b = tee(iterable); next(b, None); return zip(a, b)
 
-from itertools import combinations
-class UnionFind():
-    def __init__(self, n):
-        self.parent = [i for i in range(n)]
-        self.pdis = [0 for i in range(n)]
-    def unite(self, a, b, c):
-        # a - b = c
-        if self.find(a) != self.find(b):
-            self.pdis[self.parent[b]] = self.pdis[a] + c - self.pdis[b]
-            self.parent[self.parent[b]] = self.parent[a]
-    def find(self, a):
-        if self.parent[a] == a:
-            return (0, a)
-        else:
-            dis, self.parent[a] = self.find(self.parent[a])
-            self.pdis[a] += dis
-            return (dis + self.pdis[a], self.parent[a])
-    def maxunion(self):
-        mac = 0
-        count = Counter()
-        for i in self.parent:
-            self.find(i)
-            count[self.parent[i]] += 1
-            mac = max(mac, count[self.parent[i]])
-        return mac
 def bisect_left(a, x, lo=0, hi=None, *, key=None):
-    """Return the index where to insert item x in list a, assuming a is sorted.
-
-    The return value i is such that all e in a[:i] have e < x, and all e in
-    a[i:] have e >= x.  So if x already appears in the list, a.insert(i, x) will
-    insert just before the leftmost x already there.
-
-    Optional args lo (default 0) and hi (default len(a)) bound the
-    slice of a to be searched.
-    """
-
     if lo < 0:
         raise ValueError('lo must be non-negative')
     if hi is None:
         hi = len(a)
-    # Note, the comparison uses "<" to match the
-    # __lt__() logic in list.sort() and in heapq.
     if key is None:
         while lo < hi:
             mid = (lo + hi) // 2
@@ -136,33 +93,69 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
             else:
                 hi = mid
     return lo
-inf = float('inf')
-def answer():
-    n, m = getints()
-    uf = UnionFind(n+1)
-    f = [getints() for i in range(m)]
-    for i in range(m):
-        a, b, d = f[i]
-        uf.unite(a, b, d)
-    for i in range(n):
-        uf.find(i)
-    for i in range(m):
-        a, b, d = f[i]
-        if uf.pdis[b] - uf.pdis[a] != d:
-            return False
-    return True
-    if not flag:
-        return False
-    return True
+def gcd(a, b): return gcd(b%a, a) if a != 0 else b
+def sgn(x): return (x>0) - (x<0)
+from functools import lru_cache
+def inv(a):
+    cnt = 0
+    for i in range(len(a)):
+        for j in range(i):
+            if a[j] > a[i]:
+                cnt+=1
+    return cnt
+def test():
+    import random
+    for i in range(10000):
+        a, b, r = random.randint(1, 15), random.randint(1, 15), random.randint(1, 15)
+        answer(1,2,3)
+        break
+        #if answer(a, b, r)[0] != answer1(a, b, r)[0]:
+        #    print('a', answer(a, b, r), answer1(a, b, r))
+        #    print(a, b, r)
+        #    break
+def answer1(a, b, r):
+    ans = inf
+    ansi = inf
+    for i in range(r+1):
+        if abs((a^i) - (b^i)) < ans:
+            ans = abs((a^i) - (b^i))
+            ansi = i
+    return ans, ansi
+def answer(a, b, r):
+    a, b, r = [12,2,9]
+    k = 1
+    while (k << 1) < r:
+        k <<= 1
+    ans = 0
+    while k:
+        if (a & k == k) and (b & k == k):
+            k >>= 1
+            continue
+        elif (a & k == 0) and (b & k == 0):
+            k >>= 1
+            continue
+        elif ans + k <= r:
+            print('pre', abs((a ^ (ans + k)) - (b ^ (ans + k))))
+            print(abs((a ^ (ans)) - (b ^ ans)))
+            print(ans, k)
+            if abs((a ^ (ans + k)) - (b ^ (ans + k))) < abs((a ^ (ans)) - (b ^ ans)):
+                ans += k
+        k >>= 1
+    gr = answer1(a, b, r)[1]
+    print(answer1(a, b, r))
+    print('gr', gr)
+    print(abs((a^gr) - (b^gr)))
+    print(abs((a^r) - (b^r)))
+    return abs((a ^ (ans)) - (b ^ ans)), ans
         
         
-        
-            
     
 T = 1
-T = getint()
+#T = getint()
 for i in range(T):
-    q = answer()
+    test()
+    q = None
+    #q = answer()
     if q != None:
         if q:
             print('Yes')

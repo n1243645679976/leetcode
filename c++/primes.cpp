@@ -22,3 +22,6 @@ void sieve(int n) {
         }
     }
 }
+for(int i=3;i<=kk;i+=2){
+    if(p[i] == i) for(int j=i*2;j<=kk;j+=i) p[j] = i;
+}

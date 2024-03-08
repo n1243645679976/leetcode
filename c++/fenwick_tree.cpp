@@ -1,7 +1,8 @@
+
 class BIT{
 public:
     int _max, _min;
-    vector<int> c;
+    vector<ll> c;
     BIT(int __max, int __min = 0){
         _max = __max + 2 + __min;
         _min = __min; // serve as offset
@@ -17,8 +18,8 @@ public:
             i += i & (-i);
         }
     }
-    int query(int i){
-        int ans = 0;
+    ll query(int i){
+        ll ans = 0;
         i += 2 + _min;
         while(i > 0){
             ans += c[i];

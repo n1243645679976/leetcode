@@ -1,226 +1,132 @@
 #include<bits/stdc++.h>
+#include <cassert>
 using namespace std;
-
-void __print(int x) {cout << x;}
-void __print(long x) {cout << x;}
-void __print(long long x) {cout << x;}
-void __print(unsigned x) {cout << x;}
-void __print(unsigned long x) {cout << x;}
-void __print(unsigned long long x) {cout << x;}
-void __print(float x) {cout << x;}
-void __print(double x) {cout << x;}
-void __print(long double x) {cout << x;}
-void __print(char x) {cout << '\'' << x << '\'';}
-void __print(const char *x) {cout << '\"' << x << '\"';}
-void __print(const string &x) {cout << '\"' << x << '\"';}
-void __print(bool x) {cout << (x ? "true" : "false");}
-
-template<typename T, typename V>
-void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
-template<typename T>
-void __print(const T &x) {int f = 0; cout << '{'; for (auto &i: x) cout << (f++ ? ", " : ""), __print(i); cout << "}";}
-void _print() {cout << "]\n";}
-void _println() {}
-template <typename T, typename... V>
-void _print(T t, V... v) {__print(t); if (sizeof...(v)) cout << ", "; _print(v...);}
-template <typename T, typename... V>
-void _println(T t, V... v) {__print(t); if (sizeof...(v)) cout << " "; _println(v...);}
-#define DEBUG
-#ifdef DEBUG
-#define dbg(x...) cout << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;
-#define print(x...) _println(x); cout << endl;
+#ifdef LOCAL
+#include "dbg.cpp"
 #else
 #define dbg(x...)
 #endif
-
-#define nl endl
-#define elif else if
 #define ll long long
-#define vi vector<int>
-#define vll vector<long long>
-#define pii pair<int, int>
-#define vpii vector<pair<int, int>>
+#define vc vector
+#define ints2 array<int, 2>
+#define ints3 array<int, 3>
+#define ints4 array<int, 4>
+#define lls2 array<long long, 2>
+#define lls3 array<long long, 3>
+#define lls4 array<long long, 4>
 #define pb push_back
 #define eb emplace_back
 #define ppb pop_back
 #define all(a) a.begin(), a.end()
+#define sz(a) (int(a.size()))
 #define trav(b) for(auto& b:b)
-#define between(x, n) x < n && x >= 0
-#define FOR(i, a, b) for(int i=a;i<b;i++)
-#define FORr(i, a, b) for(int i=b-1;i>=a;i--)
-#define F1R(i, a) for(int i=1;i<=a;i++)
-#define F0R(i, a) for(int i=0;i<a;i++)
-#define F0Rr(i, a) for(int i=a-1;i>=0;i--)
-#define gsz(a, b) int a = b.size();
-#define glen(a, b) int a = b.length();
-#define ckmax(a, b) a < b ? a = b: 0
-#define smin(a, b) a = min(a, b)
-#define gmax(a, b, c, d) tie(a,c) = d>c ? tie(b,d):tie(a,c)
-#define gmin(a, b, c, d) tie(a,c) = d<c ? tie(b,d):tie(a,c)
-#define sortkey(t, a) [=](t b, t c){return a(b) < a(c);} // sortkey(key)
-#define enumerate(i, n, a) for(int i=0,n=a[i];i<a.size();i++,n=i<a.size()?a[i]:-1)
-#define sgn(a) ((a>0) - (a<0))
-#define Counter(t, a, b) map<t, int> a; trav(n, b) a[n]++;
-#define mod17 1000000007
-#define C15 100005
-#define C16 1000006
-#define C17 10000007
-#define OR std::logical_or{}
-#define AND std::logical_and{}
-#define PLUS std::plus{}
-#define pairwise(a, b, c, d) transform_reduce(a.begin(), a.end()-1, a.begin()+1, b, c, d) 
-#define myrange(c, n) vector<int> c(n); F0R(i, n) c[i] = i;
-#define POPCNT(x) __builtin_popcount(x)
-#define POPCNTLL(x) __builtin_popcountll(x)
-#define BITS(x) (x == 0 ? 0 : 31 - __builtin_clz(x))
+#define between(x, n) (((x) < n) && ((x) >= 0))
+#define between2(x, n, m) (between(x[0], n) && between(x[1], m))
+#define rep(i, a, b) for(int i=a;i<b;i++)
+#define per(i, a, b) for(int i=a;i>b;i--)
 #define coutf(a) cout<<a<<endl; cout.flush();
-const int dirs[8][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}}; // use dirs[:4] for 4 dir
+#define inf 2000000000
+#define infll 4000000000000000000ll
+#define mod17 1000000007
+#define mod99 998244353
+#define vcint vc<int>
+#define vcll vc<ll>
+#define popcount __builtin_popcount
+#define ACC accumulate
+#define SORT(a) sort(all(a))
+#define UNIQ(a) a.erase(unique(all(a)), a.end())
+#define ERASE(a, b) a.erase(a.find(b))
+#define INSERT(a, b) a.insert(b)
+#define ZERO(a) fill(all(a), 0);
+#define ZERO2(a) trav(a) fill(all(a), 0);
+#define INT(a) int a; cin>>a;
+#define INT2(a, b) int a, b; cin>>a>>b;
+#define INT3(a, b, c) int a, b, c; cin>>a>>b>>c;
+#define LL(a) ll a; cin>>a;
+#define LL2(a, b) ll a, b; cin>>a>>b;
+#define LL3(a, b, c) ll a, b, c; cin>>a>>b>>c;
+#define STR(a) string a; cin>>a;
+#define VEC(a, n) vc<ll> a(n); cin>>a;
+#define VV(a, n, m) vc<vc<int>> a(n, vc<int>(m)); trav(a) cin>>a;
+#define VVLL(a, n, m) vc<vc<ll>> a(n, vc<ll>(m)); trav(a) cin>>a;
+#define ADJ(adj, n, m)  vc<vc<int>> adj(n+1); rep(i, 0, m) {auto [a, b] = getints<2>(); adj[a].pb(b); adj[b].pb(a);}
+#define ADJ1(adj, n, m)  vc<vc<int>> adj(n+1); rep(i, 0, m) {auto [a, b] = getints<2>(); a--, b--; adj[a].pb(b); adj[b].pb(a);}
+#define ADJW(adj, n, m) vc<vc<ints2>> adj(n+1); rep(i, 0, m) {auto [a, b, c] = getints<3>(); adj[a].pb({b, c}); adj[b].pb({a, c});}
+#define ADJWLL(adj, n, m) vc<vc<lls2>> adj(n+1); rep(i, 0, m) {auto [a, b, c] = getlls<3>(); adj[a].pb({b, c}); adj[b].pb({a, c});}
+#define trav2dir(di, dj, i, j, n, m) for(int sajdklf = 0, di = i + _2dirs[sajdklf][0], dj = j + _2dirs[sajdklf][1]; sajdklf < 2; sajdklf++, di = i + _2dirs[sajdklf][0], dj = j + _2dirs[sajdklf][1]) if(between(di, n) && between(dj, m))
 
+const ints2 _8dirs[8] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+const ints2 _4dirs[4] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; 
+const ints2 _2dirs[2] = {{0, 1}, {1, 0}}; 
+
+template<typename U, std::size_t T> array<U, T> operator+(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) result[i] = arr1[i] + arr2[i]; return result;}
+template<typename U, std::size_t T> array<U, T> operator-(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) result[i] = arr1[i] - arr2[i]; return result;}
+template<typename U, std::size_t T> array<U, T> operator*(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) result[i] = arr1[i] * arr2[i]; return result;}
+template<typename U, std::size_t T> array<U, T> operator/(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) assert(arr2[i] != 0), result[i] = arr1[i] / arr2[i]; return result;}
+template<typename U, std::size_t T> array<U, T> operator+=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) arr1[i] += arr2[i]; return arr1;}
+template<typename U, std::size_t T> array<U, T> operator-=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) arr1[i] -= arr2[i]; return arr1;}
+template<typename U, std::size_t T> array<U, T> operator*=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) arr1[i] *= arr2[i]; return arr1;}
+template<typename U, std::size_t T> array<U, T> operator/=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) assert(arr2[i] != 0), arr1[i] /= arr2[i]; return arr1;}
+void print(vector<int>& c){for(int i=0;i<c.size();i++) cout<<c[i]<<" \n"[i==c.size()-1];}
+template<typename T> void print(T t, char c='\n'){cout<<t<<c;}
+template<typename T> void print(T* a, T* b){while(a < b) print(*a, ' '), a++; cout<<endl;}
+template<typename T> void printmat(vc<vc<T>> a){trav(a) print(a);}
 ostream& operator<<(ostream& a, __int128 out){if(out < 0) {a<<"-"; a << -out;} else {if(out > 9) a<<out/10; a<< int(out%10);} return a;}
-
+int strcmp(string& a, string& b, int& ia, int& ib){auto res = memcmp(&a[ia], &b[ib], min(a.size()-ia, b.size()-ib));if(res != 0) return res;return (a.size() - ia > b.size() - ib) - (b.size() - ib > a.size() - ia);}
+template<typename U, std::size_t T> ll get(array<U, T>& a, ll u){ll x=0; for(int i=0;i<T;i++) x *= u, x += a[i]; return x;}
+template<typename T> void gmin(T& a, T b){a = min(a, b);}
+template<typename T> void gmax(T& a, T b){a = max(a, b);}
 mt19937_64 gen(chrono::steady_clock::now().time_since_epoch().count());
 uniform_int_distribution<ll> rnd(0,LLONG_MAX); //usage: long long xx = rnd(gen);
-template<int MOD>
-struct ModInt {
-  unsigned x;
-  vector<ModInt<MOD>> Comb;
-  vector<ModInt<MOD>> Perm;
-  vector<ModInt<MOD>> Fact;
-  ModInt() : x(0) { }
-  ModInt(signed sig) : x(((sig)%MOD+MOD)%MOD) {}
-  void setComb(int n){
-      ModInt<MOD> c0 = 1;
+template<int k> array<int, k> getints(){array<int, k> res; rep(i, 0, k) cin>>res[i]; return res;} 
+template<int k> array<ll, k> getlls(){array<ll, k> res; rep(i, 0, k) cin>>res[i]; return res;}
+template<typename T, std::size_t N> istream& operator>>(istream& a, array<T, N>& in){rep(i, 0, N) a>>in[i]; return a;}
+template<typename T> istream& operator>>(istream& a, vector<T>& in){for(auto& gin:in) a>>gin; return a;}
+vc<int> getints(int n){vc<int> res(n); trav(res) cin>>res; return res;}
+vc<ll> getlls(int n){vc<ll> res(n); trav(res) cin>>res; return res;}
+ll getint(){ll a; cin>>a; return a;}
 
-      for(int i=0;i<=n;i++){
-          Comb.push_back(c0);
-          c0 *= (n-i);
-          c0 /= (i+1);
-      }
-  }
-  void setPerm(int n){
-      ModInt<MOD> p0 = 1;
-      for(int i=0;i<=n;i++){
-          Perm.push_back(p0);
-          p0 *= (n-i);
-      }
-  }
-  void setFact(int n){
-      ModInt<MOD> f0 = 1;
-      for(int i=1;i<=n;i++){
-          Fact.push_back(f0);
-          f0 *= i;
-      }
-  }
-  ModInt(signed long long sig) : x(((sig)%MOD+MOD)%MOD) { }
-  int get() const { return (int)x; }
-  ModInt pow(ll p) { ModInt res = 1, a = *this; while (p) { if (p & 1) res *= a; a *= a; p >>= 1; } return res; }
- 
-  ModInt &operator+=(ModInt that) { if ((x += that.x) >= MOD) x -= MOD; return *this; }
-  ModInt &operator-=(ModInt that) { if ((x += MOD - that.x) >= MOD) x -= MOD; return *this; }
-  ModInt &operator*=(ModInt that) { x = (unsigned long long)x * that.x % MOD; return *this; }
-  ModInt &operator/=(ModInt that) { return (*this) *= that.pow(MOD - 2); }
- 
-  ModInt operator+(ModInt that) const { return ModInt(*this) += that; }
-  ModInt operator-(ModInt that) const { return ModInt(*this) -= that; }
-  ModInt operator*(ModInt that) const { return ModInt(*this) *= that; }
-  ModInt operator/(ModInt that) const { return ModInt(*this) /= that; }
-  bool operator<(ModInt that) const { return x < that.x; }
-  friend ostream& operator<<(ostream &os, ModInt a) { os << a.x; return os; }
-};
-typedef ModInt<1000000007> mint17;    
-typedef ModInt<998244353> mint93;
-class BIT{
-public:
-    int _max, _min;
-    vector<int> c;
-    BIT(int __max, int __min = 0){
-        _max = __max + 2 + __min;
-        _min = __min; // serve as offset
-        c.reserve(_max);
-        for(int i = 0;i<_max;i++){
-            c[i] = 0;
-        }
-    }
-    void update(int i, int v){
-        i += 2 + _min;
-        while(i < _max){
-            c[i] += v;
-            i += i & (-i);
-        }
-    }
-    int query(int i){
-        int ans = 0;
-        i += 2 + _min;
-        while(i > 0){
-            ans += c[i];
-            i -= i & (-i);
-        }
-        return ans;
-    }
-};
-struct UnionFind {
-    vector<int> par;
-    vector<int> size;
-    UnionFind(int N) : par(N), size(N) {
-        for(int i = 0; i < N; i++) par[i] = i, size[i] = 1;
-    }
-
-    int find(int x) {
-        if (par[x] == x) return x;
-        return par[x] = find(par[x]);
-    }
-
-    void unite(int x, int y) {
-        int rx = find(x);
-        int ry = find(y);
-        if (rx == ry) return;
-        par[rx] = max(rx, ry);
-        par[ry] = max(rx, ry);
-        size[ry] += size[rx];
-    }
-
-    bool same(int x, int y) {
-        int rx = find(x);
-        int ry = find(y);
-        return rx == ry;
-    }
-};
-
-
-int solve(){
-  int n; cin>>n;
-  vi a(n); trav(a) cin>>a;
-  vi b(n); trav(b) cin>>b;
-  vi count(3);
-  
-  F0R(i, n){
-    set<pair<int, int>> r;
-    int aa = a[i], bb = b[i];
-    if(aa == 0 && bb == 0) {
-      count[0]++, count[1]++, count[2]++;
-      continue;
-    }
-    while(aa != 0 && bb != 0 && aa != bb){
-      if(aa >= bb * 2) {aa %= bb * 2; continue;}
-      if(bb >= aa * 2) {bb %= aa * 2; continue;}
-      if(r.count({aa, bb})) return false;
-      r.insert({aa, bb});
-      if(aa > bb) aa = 2 * bb - aa;
-      else bb = 2 * aa - bb;
-    }
-    if(aa == 0) count[0] += 1;
-    else if(bb == 0) count[1] += 1;
-    else count[2] += 1;
-  }
-  F0R(i, 3) if(count[i] == n) return true;
-  return false;
+ll pow(ll a, ll b){ll res = 1; while(b){if(b&1) res *= a; a *= a; b>>=1;} return res;}
+ll pow(int a, int b){ll res = 1; while(b){if(b&1) res *= a; a *= a; b>>=1;} return res;}
+void YES(){print("Yes");}
+void NO(){print("No");}
+// if you are attending ABC, try random methods like abc339_f
+// using lst:
+//   apply需要是對任何節點都正確，如prod出max(s[l:r])，操作是^1的話，並不保證該節點為s'[l:r] = max(s[l:r]) ^ 1
+bool comp(lls2& a, lls2& b){
+    ll g = gcd(a[1], b[1]);
+    __int128 a1 = a[0] * b[1] / g;
+    __int128 a2 = b[0] * a[1] / g;
+    dbg(a[0], a[1], b[0], b[1], int(a1), int(a2));
+    return (a1 > a2) - (a1 < a2);
 }
+int solve(){
+    INT(n);
+    VEC(a, n);
+    vc<lls2> r; r.pb({-1, 1});
+    vc<double> ans;
+    per(i, n-1, -1){
+        lls2 k{a[i], 1};
+        while(comp(k, r.back()) <= 0){
+            k += r.back(); r.pop_back();
+        }
+        ans.pb(1.*k[0]/k[1]);
+        r.pb(k);
+    }
+    dbg(r)
+    rep(i, 0, n){
+        printf("%.8lf\n", ans[i]);
+    }
+
+    return -2;
+}
+
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 	int T = 1;
+#ifdef DOT
 	cin >> T;
+#endif
 	while (T--) {
 		int q = solve();
 		if(q == 0) cout<<"No"<<endl;
