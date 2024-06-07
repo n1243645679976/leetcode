@@ -2,11 +2,13 @@ class UnionFind():
     def __init__(self, n):
         self.parent = [i for i in range(n)]
     def unite(self, a, b):
+        assert 0 <= a < self.n and 0 <= b < self.n
         if self.find(a) != self.find(b):
             mx = max(self.parent[a], self.parent[b])
             self.parent[self.parent[b]] = mx
             self.parent[self.parent[a]] = mx
     def find(self, a):
+        assert 0 <= a < self.n
         if self.parent[a] == a:
             return a
         else:

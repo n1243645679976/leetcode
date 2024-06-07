@@ -1,69 +1,61 @@
 // https://leetcode.com/problems/longest-palindromic-substring/submissions/1220967765/
+#include<vector.h>
+
 namespace manachar{
-    template<typename T>
-    vector<T> manachar_longest(vector<T>& temp, function<T()> e){
-        vector<T> data(1, e());
-        for(auto& d:temp) data.push_back(d), data.push_back(e());
-
-        int R = 0, M = 0;
-        vector<int> ans(data.size());
-        for(int C = 0;C < data.size();C++){
-            R = max(R, C);
-            int L = M - (C - M);
-            if(L >= 0){
-                ans[C] = min(ans[L], R-C);
-                if(C + ans[C] >= R) R = C + ans[C], M = C;
-            }
-            while(C + ans[C] == R && R < data.size() && C - (R - C) >= 0){
-                if(data[R] == data[C - (R - C)]) ans[C]++, R++, M = C;
-                else break;
-            }
-        }
-        vector<T> res;
-        int malength = 0, startind = 0;
-        for(int i=0;i<ans.size();i++){
-            int length = ans[i] - 1;
-            if(length > malength) malength = length, startind = i;
-        }
-        for(int i=startind-ans[startind]+1;i<startind+ans[startind];i++){
-            if(data[i] != e()) res.push_back(data[i]);
-        }
-        return res;
+template<typename T>
+class manachar{
+public:
+    vector<int> info;
+    vector<T> data;
+    T e;
+    void padding(vector<T>& temp, T e){
+        data.resize(temp.size() * 2 + 1, e);
+        for(int i=0;i<temp.size();i++) data[i*2+1] = temp[i];
     }
-    // "babad" -> return the length spread from center "#b#a#b#a#d#", [{1, 2, 1, 4, 1, 4, 1, 2, 1, 2, 1}]
-    // the length, left bound, right bound of each answer can be found from the last two `for` inside manachar_longest.
-    template<typename T>
-    vector<int> manachar(vector<T>& temp, function<T()> e){
-        vector<T> data(1, e());
-        for(auto& d:temp) data.push_back(d), data.push_back(e());
-
+public:
+    void init(vector<T>& temp, T e){
+        padding(temp, e);
+        this->e = e;
         // .....C.M.C..R
         // check M
         int R = 0, M = 0;
-        vector<int> ans(data.size());
+        info.resize(data.size());
         for(int C = 0;C < data.size();C++){
             R = max(R, C);
             int L = M - (C - M);
             if(L >= 0){
-                ans[C] = min(ans[L], R-C);
-                if(C + ans[C] >= R) R = C + ans[C], M = C;
+                info[C] = min(info[L], R-C);
+                if(C + info[C] >= R) R = C + info[C], M = C;
             }
-            while(C + ans[C] == R && R < data.size() && C - (R - C) >= 0){
-                if(data[R] == data[C - (R - C)]) ans[C]++, R++, M = C;
+            while(C + info[C] == R && R < data.size() && C - (R - C) >= 0){
+                if(data[R] == data[C - (R - C)]) info[C]++, R++, M = C;
                 else break;
             }
         }
-        return ans;
     }
-    string manachar_longest(string& data){
+    manachar(vector<T>& s, T e){
+        init(s, e);
+    }
+    manachar(string& data, char e = '#'){
         vector<char> s(data.begin(), data.end());
-        function<char()> e = []() -> char {return '#';};
-        auto res = manachar_longest(s, e);
-        return string(res.begin(), res.end());
+        init(s, e);
     }
-    vector<int> manachar(string& data){
-        vector<char> s(data.begin(), data.end());
-        function<char()> e = []() -> char {return '#';};
-        return manachar(s, e);
+    vector<T> longest_palindrom(){
+        vector<T> res;
+        int malength = 0, startind = 0;
+        for(int i=0;i<info.size();i++){
+            int length = info[i] - 1;
+            if(length > malength) malength = length, startind = i;
+        }
+        for(int i=startind-info[startind]+1;i<startind+info[startind];i++){
+            if(data[i] != this->e) res.push_back(data[i]);
+        }
+        return res;
     }
-}
+    bool check_palindrom(int l, int r){
+        l *= 2; l++; r *= 2; r++;
+        int mid = (l+r) / 2;
+        return mid - info[mid] + 1 <= l;
+    }
+};
+} 

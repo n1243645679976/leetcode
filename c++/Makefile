@@ -6,14 +6,14 @@ SRCS = temp.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
-	./$(TARGET) < test.txt
+	$(TARGET) < test.txt
 
 ans: $(TARGET)
-	./$(TARGET) < test.txt > out.txt
+	$(TARGET) < test.txt > out.txt
 	fc .\out.txt .\ans.txt
 
 ml: tempml
-	./temp < test.txt
+	temp < test.txt
 
 
 temp: $(OBJS)
@@ -21,13 +21,13 @@ temp: $(OBJS)
 
 temp1: temp1.cpp
 	$(CXX) $(CXXFLAGS) temp1.cpp -o $@
-	./temp1 < test1.txt
+	temp1 < test1.txt
 
 test:
 	python t_generate_test.py > test.txt
 
 input: $(TARGET)
-	./$(TARGET)
+	$(TARGET)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
