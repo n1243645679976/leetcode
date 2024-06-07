@@ -109,8 +109,8 @@ public:
         for (auto c : word) {
             node = node->getnext(c);
             res.push_back(c);
-            if(node->is_end) return res;
             if(node == NULL) return {};
+            if(node->is_end) return res;
         }
         return {};
     }
