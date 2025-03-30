@@ -1,7 +1,7 @@
 // https://leetcode.com/problems/longest-palindromic-substring/submissions/1220967765/
 #include<vector.h>
 
-namespace manachar{
+namespace chh{
 template<typename T>
 class manachar{
 public:
@@ -53,9 +53,11 @@ public:
         return res;
     }
     bool check_palindrom(int l, int r){
+        // inclusive [l, r]
         l *= 2; l++; r *= 2; r++;
         int mid = (l+r) / 2;
         return mid - info[mid] + 1 <= l;
     }
 };
+using manachar_str = manachar<char>;
 } 

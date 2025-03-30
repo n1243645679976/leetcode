@@ -76,6 +76,26 @@ struct lazy_segtree {
 
 #else
 
+class S{
+    int width;
+    int have;
+    int ttwidth;
+}
+S op(S a, S b){
+    return S{a.width + b.width, min(a.have, b.have), a.ttwidth + b.ttwidth};
+}
+S e(){
+    return S{0, 0, 0};
+}
+S mapping(int upd, S a){
+    a.have -= upd;
+    return {a.width, a.have, !!a.have * a.width};
+}
+int comp(int a, int b){
+    return a+b;
+}
+atcoder::lazy_segtree<S, op, e, F, mapping, comp, id>
+
 template <class S,
           S (*op)(S, S),
           S (*e)(),

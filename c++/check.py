@@ -99,52 +99,40 @@ def gcd(a, b): return gcd(b%a, a) if a != 0 else b
 def sgn(x): return (x>0) - (x<0)
 from functools import lru_cache
 from itertools import product, permutations
+DOT = 1
 
-class BIT:
-    def __init__(self, n):
-        # valid input: [0, n]
-        self.sums = [0] * (n+3)
-    
-    def update(self, i, delta):
-        # update >=i with delta
-        i += 2
-        while i < len(self.sums):
-            self.sums[i] += delta
-            i += i & (-i)
-    def _query(self, i):
-        # get (0, i]
-        i += 2
-        res = 0
-        while i > 0:
-            res += self.sums[i]
-            i -= i & (-i)
-        return res
-    
-    def query(self, i, j =None):
-        # [0, i] or [i, j]
-        if j == None:
-            return self._query(i)
-        else:
-            assert j >= i
-            return self._query(j) - self._query(i-1)
-        
-    def update_interval(self, a, b, delta):
-        # update [b, a]
-        self.update(a+1, -delta)
-        self.update(b, delta)
-    
 def popcount(a):
     return bin(a).count('1')
-def ctz(a):
-    return len(bin(a).split('1')[-1])
-def __lg(a):
-    return len(bin(a).split('1', 1)[1])
 def listn(n):
     return [-1] * n
-def answer():
-    
 
-DOT = 0
+def answer():
+    n, k = getints()
+    a = getints()
+    b = getints()
+    ans = 0
+    ansaa = []
+    ansbb = []
+    for i in range(1<<n):
+        su = 0
+        aa = []
+        bb = []
+        for j in range(n):
+            if (1<<j) & i:
+                su += a[j]
+                aa.append(a[j])
+                bb.append(b[j])
+        bb.sort(reverse=True)
+        su = sum(bb[k:]) - su
+        if su > ans:
+            ans = max(ans, su)
+            ansaa = aa
+            ansbb = bb
+    print(ans, ansaa, ansbb)
+
+
+
+
 T = 1
 if DOT:
     T = getint()

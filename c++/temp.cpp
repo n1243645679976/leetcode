@@ -1,4 +1,3 @@
-#pragma GCC optimize("O3")
 #include<bits/stdc++.h>
 #include <cassert>
 using namespace std;
@@ -7,34 +6,44 @@ using namespace std;
 #else
 #define dbg(x...)
 #endif
+
 #define ll long long
 #define vc vector
-#define vv(type, name, n, m) vector name(n, vector<type>(m));
 #define ints2 array<int, 2>
 #define ints3 array<int, 3>
 #define ints4 array<int, 4>
+#define ints5 array<int, 5>
 #define lls2 array<long long, 2>
 #define lls3 array<long long, 3>
 #define lls4 array<long long, 4>
+#define lls5 array<long long, 5>
 #define pb push_back
-#define eb emplace_back
+#define eb emplace_back 
 #define ppb pop_back
+#define pqueue(x) priority_queue<x>
+#define rpqueue(x) priority_queue<x, vector<x>, greater<x>>
 #define all(a) a.begin(), a.end()
-#define sz(a) (int(a.size()))
-#define trav(b) for(auto& b:b)
-#define between(x, n) (((x) < n) && ((x) >= 0))
+#define rall(a) a.rbegin(), a.rend()
+//#define sz(a) (int(a.size()))
+#define trav(b) for(auto& b:b) 
+
 #define between2(x, n, m) (between(x[0], n) && between(x[1], m))
 #define rep(i, a, b) for(int i=(a);i<(b);i++)
 #define per(i, a, b) for(int i=(a);i>(b);i--)
 #define coutf(a) cout<<a<<endl; cout.flush();
 #define inf 2000000000
 #define infll 4000000000000000000ll
+#define ee9 1000000000
+#define ee18 1000000000000000000ll
 #define mod17 1000000007
 #define mod99 998244353
 #define vcint vc<int>
 #define vcll vc<ll>
 #define popcount __builtin_popcount
-#define ACC accumulate
+#define len(a) ((int)(a.size()))
+#define SUM(a) (accumulate(all(a), 0ll))
+#define MAX(a) (*max_element(all(a)))
+#define MIN(a) (*min_element(all(a)))
 #define SORT(a) sort(all(a))
 #define UNIQ(a) a.erase(unique(all(a)), a.end())
 #define ERASE(a, b) a.erase(a.find(b))
@@ -54,8 +63,7 @@ using namespace std;
 #define VEC1(a, n) vc<int> a(n); rep(i, 0, n) cin>>a[i], a[i]--;
 #define VECLL(a, n) vc<ll> a(n); cin>>a;
 #define VECLL1(a, n) vc<ll> a(n); rep(i, 0, n) cin>>a[i], a[i]--;
-#define VV(a, n, m) vc<vc<int>> a(n, vc<int>(m)); trav(a) cin>>a;
-#define VVLL(a, n, m) vc<vc<ll>> a(n, vc<ll>(m)); trav(a) cin>>a;
+#define VV(type, a, n, m) vc<vc<type>> a(n, vc<type>(m)); trav(a) cin>>a;
 #define ADJ(adj, n, m)  vc<vc<int>> adj(n+1); rep(i, 0, m) {auto [a, b] = getints<2>(); adj[a].pb(b); adj[b].pb(a);}
 #define ADJ1(adj, n, m)  vc<vc<int>> adj(n+1); rep(i, 0, m) {auto [a, b] = getints<2>(); a--, b--; adj[a].pb(b); adj[b].pb(a);}
 #define ADJW(adj, n, m) vc<vc<ints2>> adj(n+1); rep(i, 0, m) {auto [a, b, c] = getints<3>(); adj[a].pb({b, c}); adj[b].pb({a, c});}
@@ -65,9 +73,10 @@ using namespace std;
 #define chmin(a, b) a = min(a, b)
 #define trav2dir(di, dj, i, j, n, m) for(int sajdklf = 0, di = i + _2dirs[sajdklf][0], dj = j + _2dirs[sajdklf][1]; sajdklf < 2; sajdklf++, di = i + _2dirs[sajdklf][0], dj = j + _2dirs[sajdklf][1]) if(between(di, n) && between(dj, m))
 #define trav4dir(di, dj, i, j, n, m) for(int sajdklf = 0, di = i + _4dirs[sajdklf][0], dj = j + _4dirs[sajdklf][1]; sajdklf < 4; sajdklf++, di = i + _4dirs[sajdklf][0], dj = j + _4dirs[sajdklf][1]) if(between(di, n) && between(dj, m))
+#define trav8dir(di, dj, i, j, n, m) for(int sajdklf = 0, di = i + _8dirs[sajdklf][0], dj = j + _8dirs[sajdklf][1]; sajdklf < 8; sajdklf++, di = i + _8dirs[sajdklf][0], dj = j + _8dirs[sajdklf][1]) if(between(di, n) && between(dj, m))
 
-const ints2 _8dirs[8] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-const ints2 _4dirs[4] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; 
+const ints2 _8dirs[9] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}, {-1, 0}};
+const ints2 _4dirs[5] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {-100, -100}}; 
 
 template<typename U, std::size_t T> array<U, T> operator+(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) result[i] = arr1[i] + arr2[i]; return result;}
 template<typename U, std::size_t T> array<U, T> operator-(const array<U, T>& arr1, const array<U, T>& arr2) {array<U, T> result;for(int i = 0; i < T; ++i) result[i] = arr1[i] - arr2[i]; return result;}
@@ -77,12 +86,17 @@ template<typename U, std::size_t T> array<U, T> operator+=(array<U, T>& arr1, co
 template<typename U, std::size_t T> array<U, T> operator-=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) arr1[i] -= arr2[i]; return arr1;}
 template<typename U, std::size_t T> array<U, T> operator*=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) arr1[i] *= arr2[i]; return arr1;}
 template<typename U, std::size_t T> array<U, T> operator/=(array<U, T>& arr1, const array<U, T>& arr2) {for(int i = 0; i < T; ++i) assert(arr2[i] != 0), arr1[i] /= arr2[i]; return arr1;}
+template<typename U, std::size_t T> ostream& operator<<(ostream& a, array<U, T>& arr){if(T == 0) {a<<"{}"; return a;} a<<"{"<<arr[0]; for(int i=1;i<T;i++) a<<", "<<arr[i]; a<<"}"; return a;}
+
 template<typename T> void print(vector<T>& c, int a=-1, int b=-1){if(a == -1) a = 0; if(b == -1) b = c.size(); for(int i=a;i<b;i++) cout<<c[i]<<" \n"[i==b-1];}
 template<typename T> void print(T t, char c='\n'){cout<<t<<c;}
 template<typename T> void print(T* a, T* b){while(a < b) print(*a, ' '), a++; cout<<endl;}
 template<typename T> void print(T* a, int b, int c){for(int i=b;i<c;i++) cout<<a[i]<<" "; cout<<endl;}
 template<typename T> void printmat(vc<vc<T>> a){trav(a) print(a);}
+template<typename T> ostream& operator<<(ostream& a, vector<T>& arr){for(int i=0;i<arr.size();i++) a<<arr[i]<<" "; return a;}
 ostream& operator<<(ostream& a, __int128 out){if(out < 0) {a<<"-"; a << -out;} else {if(out > 9) a<<out/10; a<< int(out%10);} return a;}
+
+
 int strcmp(string& a, string& b, int& ia, int& ib){auto res = memcmp(&a[ia], &b[ib], min(a.size()-ia, b.size()-ib));if(res != 0) return res;return (a.size() - ia > b.size() - ib) - (b.size() - ib > a.size() - ia);}
 template<typename U, std::size_t T> ll get(array<U, T>& a, ll u){ll x=0; for(int i=0;i<T;i++) x *= u, x += a[i]; return x;}
 template<typename T> void gmin(T& a, T b){a = min(a, b);}
@@ -104,33 +118,74 @@ void NO(){print("No");}
 
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-template<typename T>
-class SortedList : public __gnu_pbds::tree<T, __gnu_pbds::null_type,
-                  std::less<T>, __gnu_pbds::rb_tree_tag,
-                  __gnu_pbds::tree_order_statistics_node_update> { // pack like SortedList in python
-
-public:
-  T operator[](int x){
-    assert(0 <= x && x < this->size());
-    return *this->find_by_order(x);
-  }
-  int bisect_left(T x){
-    return this->order_of_key(x);
-  }
-  int bisect_right(T x){
-    int ind = this->order_of_key(x);
-    if(this->operator[](ind) == x) ind++;
-    return ind;
-  }
-  // insert
-  // erase
-  // lower_bound
-  // upper_bound
-  // size
-};
-
+namespace chh{
+  template<typename T>
+  class _multiset : public __gnu_pbds::tree<T, __gnu_pbds::null_type, less_equal<T>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>{
+    public:
+      auto operator[](int ind){
+        assert(0 <= ind && ind < this->size());
+        return *this->find_by_order(ind);
+      }
+      inline auto lower_bound(T a){
+        return __gnu_pbds::tree<T, __gnu_pbds::null_type, less_equal<T>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>::lower_bound(a--);
+      }
+      // iterator find_by_order(int k) ;
+      // int order_of_key(T a) ;
+  };
+  template<typename T>
+  class _set : public __gnu_pbds::tree<T, __gnu_pbds::null_type, less<T>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>{
+    public:
+      auto operator[](int ind){
+        assert(0 <= ind && ind < this->size());
+        return *this->find_by_order(ind);
+      }
+      // iterator find_by_order(int k) ;
+      // int order_of_key(T a) ;
+  };
+}
+// }
+// namespace chh{
+//   template<typename T>
+//   bool default_compare(T a, T b) {
+//       return std::less<T>()(a, b);
+//   }
+//   template<typename T> 
+//   class SortedList{
+//   public:
+//     using COMPARE = less<pair<T, int>>;
+//     __gnu_pbds::tree<pair<T, int>, __gnu_pbds::null_type,
+//                     COMPARE, __gnu_pbds::rb_tree_tag,
+//                     __gnu_pbds::tree_order_statistics_node_update> rbt;
+//     map<T, int> lastind;
+//     int ind = 0;
+//     T operator[](int x){
+//       assert(0 <= x && x < this->size());
+//       return (*rbt.find_by_order(x)).first;
+//     }
+//     inline auto lower_bound(T& x){
+//       return rbt.find_by_order(rbt.order_of_key(make_pair(x, -1)));
+//     }
+//     inline auto upper_bound(T& x){
+//       return rbt.find_by_order(rbt.order_of_key(make_pair(x, INT_MAX)));
+//     }
+//     void insert(T x){
+//       lastind[x] = ++ind;
+//       rbt.insert(make_pair(move(x), ind));
+//     }
+//     void erase(T x){
+//       auto it = find(x);
+//       if(it != rbt.end()) rbt.erase(it);
+//     }
+//     auto find(T x){
+//       return rbt.find(make_pair(move(x), lastind[x]));
+//     }
+//     int size(){
+//       return rbt.size();
+//     }
+//   };
+// }
 template<int MOD>
-struct mint {
+struct mint { 
   unsigned x;
   mint() : x(0) { }
   mint(signed sig) : x(((sig)%MOD+MOD)%MOD) {}
@@ -148,85 +203,84 @@ struct mint {
   mint operator*(mint that) const { return mint(*this) *= that; }
   mint operator/(mint that) const { return mint(*this) /= that; }
   bool operator<(mint that) const { return x < that.x; }
+  
+  friend mint operator+(int lhs, mint rhs) {return rhs + lhs;}
+  friend mint operator-(int lhs, mint rhs) {return mint(lhs) - rhs;}
+  friend mint operator*(int lhs, mint rhs) {return rhs * lhs;}
+  friend mint operator/(int lhs, mint rhs) {return mint(lhs) / rhs;}
+
   friend ostream& operator<<(ostream &os, mint a) { os << a.x; return os; }
 };
 typedef mint<1000000007> mint17;
 typedef mint<998244353> mint99;
-int ff = 0;
- 
-class BIT{
-public:
-    int _max, _min;
-    vector<ll> c;
-    BIT(int __max, int __min = 0){
-        _max = __max + 2 + __min;
-        _min = __min; // serve as offset
-        c.reserve(_max);
-        for(int i = 0;i<_max;i++){
-            c[i] = 0;
-        }
-    }
-    void update(int i, int v){
-        i += 2 + _min;
-        while(i < _max){
-            c[i] += v;
-            i += i & (-i);
-        }
-    }
-    ll query(int i){
-        ll ans = 0;
-        i += 2 + _min;
-        while(i > 0){
-            ans += c[i];
-            i -= i & (-i);
-        }
-        return ans;
-    }
-};
-bool check(vc<int>& a){
-  set<int> g;
-  rep(i, 0, a.size()-1){
-    if(g.count(a[i] * a[i+1])) {dbg(a[i], a[i+1]); return false;}
-    g.insert(a[i] * a[i+1]);
+/* 
+  auto ind = rlower_bound(0, 1000000001, less<long long>, [&](int x){
+      int l = 0, ans = 0;
+      while(l < nums.size() - 1) if(nums[l+1] - nums[l] <= x) l += 2, ans++; else l++;
+      return ans >= p;
+  });
+  */
+int solve() {
+  INT(n)
+  STR(s)
+  map<int, int> have, makable;
+  rep(i, 0, n){
+    have[s[i]]++;
   }
-  return true;
+  rep(i, 0, n-1){
+    if(s[i] != s[i+1]) makable['T' + 'I' + 'L' - s[i] - s[i+1]]++;
+  }
+  string g = "TIL";
+  int sz = n;
+  vc<int> ans;
 
-}
-namespace prime{
-  vc<int> ps(1, 2);
-  void setprimes(int n){
-    for(int i=3;i<n;i+=2){
-      int flag = 0;
-      for(auto p:ps){
-        if(i % p == 0) {flag = 1;break;}
+  auto go = [&](char tar) -> bool {
+    rep(i, 0, sz-1){
+      if(s[i] != s[i+1] && s[i] != tar && s[i+1] != tar){
+        ans.pb(i+1);
+        dbg(i, char('T' + 'I' + 'L' - s[i] - s[i+1]), s[i], s[i+1], tar, s[i] == tar)
+        s.insert(i+1, 1, 'T' + 'I' + 'L' - s[i] - s[i+1]);
+        have[tar]++;
+        makable[tar]-=2; for(auto t:g) makable[t]++;
+        sz++;
+        return true;
       }
-      if(!flag) ps.pb(i);
     }
-  }
-}
-int solve(){
-    INT2(n, d)
-    vc<ints3> xy(n);
-    map<ints2, int> xy2i;
-    rep(i, 0, n){
-        INT2(a, b)
-        xy[i] = {a, b, i+1};
-        xy2i[{a, b}] = i+1;
+    return false;
+  };
+  rep(_, 0, 2*n){
+    if(have['T'] == have['I'] && have['I'] == have['L']) {
+      cout<<ans.size()<<endl;
+      for(auto ans:ans) cout<<ans<<endl;
+      return -2;
     }
-    
-    for(auto [a, b, i]:xy){
-        if(d % 4 == 0){ 
-            if(xy2i.count({a + d/2, b - d/2}) && xy2i.count({a + d / 4 * 3, b + d / 4})){
-                cout<<i<<" "<<xy2i[{a+d/2, b-d/2}]<<" "<<xy2i[{a+d/4*3, b+d/4}]<<endl;
-            }
-            if(xy2i.count({a + d/2, b + d/2}) && xy2i.count({a + d / 4 * 3, b - d / 4})){
-
+    string temp = "ILT";
+    do{
+      if(have[temp[0]] <= have[temp[1]] && have[temp[0]] <= have[temp[2]]){
+        dbg(temp)
+        if(makable[temp[0]]){
+          if(!go(temp[0])) goto end;
         }
-        if(d % 2 == 0) if(sxy.count({a + d, b}) && sxy.count({a + d/2, b + d/2}))
-
-    }
-
-    return -2;
+        else{
+          if(makable[temp[1]] == 0 && makable[temp[2]] == 0){
+            goto end;
+          }
+          else if(makable[temp[1]] >= makable[temp[2]] && makable[temp[2]]){
+            if(!go(temp[2])) goto end;
+          }
+          else{
+            if(!go(temp[1])) goto end;
+          }
+        }
+        break;
+      }
+    } while(next_permutation(all(temp)));
+    dbg(s)
+  }
+  
+  end:;
+  cout<<-1<<endl;
+  return -2;
 }
 
 const int DOT = 1;

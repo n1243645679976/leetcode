@@ -45,6 +45,10 @@
         "utility": "cpp",
         "typeindex": "cpp",
         "algorithm": "cpp",
-        "lazysegtree": "cpp"
+        "lazysegtree": "cpp",
+        "convolution": "cpp",
+        "internal_queue": "cpp",
+        "e": "c",
+        "internal_math": "cpp"
     }
 }

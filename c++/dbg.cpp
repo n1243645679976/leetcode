@@ -13,7 +13,8 @@ void __print(char x) {cout << '\'' << x << '\'';}
 void __print(const char *x) {cout << '\"' << x << '\"';}
 void __print(const string &x) {cout << '\"' << x << '\"';}
 void __print(bool x) {cout << (x ? "true" : "false");}
-
+template<size_t T>
+void __print(const array<int, T> &a){cout<<"{"; for(int i=0;i<T;i++) cout<<(i == 0 ? "": ", ")<<a[i]; cout<<"}";}
 template<typename T, typename V>
 void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
 template<typename T>
@@ -24,4 +25,4 @@ template <typename T, typename... V>
 void _print(T t, V... v) {__print(t); if (sizeof...(v)) cout << ", "; _print(v...);}
 template <typename T, typename... V>
 void _println(T t, V... v) {__print(t); if (sizeof...(v)) cout << " "; _println(v...);}
-#define dbg(x...) cout << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;
+#define dbg(x...) cout << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;    

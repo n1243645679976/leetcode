@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++20  -DLOCAL -I.
+CXXFLAGS =  -I. -Wall -Wextra -Wconversion -static -DLOCAL -Wl,--stack=268435456 -O2 -std=c++20
 TARGET = temp
 
 SRCS = temp.cpp
@@ -23,8 +23,17 @@ temp1: temp1.cpp
 	$(CXX) $(CXXFLAGS) temp1.cpp -o $@
 	temp1 < test1.txt
 
-test:
+temppy: temp.py
+	python temp.py < test.txt
+
+check: all
 	python t_generate_test.py > test.txt
+	python temp.py < test.txt > a.txt
+	$(TARGET) < test.txt > b.txt
+	fc .\a.txt .\b.txt
+test: $(TARGET)
+	python t_generate_test.py > test.txt
+	$(TARGET) < test.txt
 
 input: $(TARGET)
 	$(TARGET)
