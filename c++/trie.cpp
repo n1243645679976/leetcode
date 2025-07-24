@@ -1,85 +1,46 @@
-template<typename T, typename U>
-struct TrieNode : public unordered_map<U, TrieNode<T, U>*> {
-    int is_end = 0;
-    int cnt = 0;
-    vector<T> data;
-    TrieNode() {}
-    TrieNode* setnext(U t){
-        if((*this)[t] == NULL) (*this)[t] = new TrieNode();
-        return (*this)[t];
-    }
-    TrieNode* getnext(U t){
-        return (*this)[t];
-    }
-};
-// 記得要確定end才有詞，不然是prefix
-template<typename T, typename U>
-class Trie {
-public:
-    TrieNode<U>* root;
-
-    Trie() {
-        root = new TrieNode<U>;
-    }
-    void insert(T word) {
-        TrieNode<U>* node = root;
-        for (auto c : word) {
-            node = node->setnext(c);
-            node->cnt++;
+namespace chh{
+    const int INPUT_END = -1, NOT_FOUND = -1;
+    template<class DATA,
+             class INPUT,
+             class OUTPUT,
+             int DICT_SIZE, 
+             int getkey(INPUT&, int), 
+             void apply_route(DATA&, bool), 
+             void aggregate_route(DATA&, OUTPUT&, bool),
+             OUTPUT (*found_fail)()>
+    class Trie{
+    public:
+        class TrieNode{
+        public:
+            vector<int> next;
+            DATA data;
+            TrieNode() : next(DICT_SIZE, -1) {}
+        };
+        vector<TrieNode> nodes;
+        Trie() : nodes(1) {}
+        void insert(INPUT& a){
+            int i = 0, key = getkey(a, i), node = 0;
+            while(key != INPUT_END){
+                if(nodes[node].next[key] == -1) nodes[node].next[key] = nodes.size(), nodes.push_back(TrieNode());
+                node = nodes[node].next[key];
+                apply_route(nodes[node].data, 0);
+                key = getkey(a, ++i);
+            }
+            apply_route(nodes[node].data, 1);
         }
-        node->is_end++;
-        node->data.push_back(word);
-    }
-
-    bool startsWith(T prefix) {
-        TrieNode<U>* node = root;
-        for (auto c : prefix) {
-            node = node->getnext(c);
-            if(node == NULL) return 0;
+        OUTPUT search(INPUT& a){
+            int i = 0, key = getkey(a, i), node = 0;
+            OUTPUT o = OUTPUT();
+            while(key != INPUT_END){
+                node = nodes[node].next[key];
+                if(node == NOT_FOUND) {
+                    return found_fail();
+                }
+                aggregate_route(nodes[node].data, o, 0);
+                key = getkey(a, ++i);
+            }
+            aggregate_route(nodes[node].data, o, 1);
+            return o;
         }
-        return true;
-    }
-
-    bool search(T word) {
-        TrieNode<U>* node = root;
-        for (auto c : word) {
-            node = node->getnext(c);
-            if(node == NULL) return 0;
-        }
-        return node->is_end;
-    }
-};
-
-
-
-
-class TrieData{
-    virtual bool is_end() = 0;
-    virtual int getnext() = 0;
+    };
 }
-class IntTrieData : public TrieData{
-private:
-    int val;
-    int ind;
-public:
-    IntTrieData(int v) : val(v){ind = 30;}
-    bool is_end() override {
-        return ind == -1;
-    }
-    int getnext() override {
-        int temp = (val >> ind) & 1;
-        ind--;
-        return temp;
-    }
-}
-class TrieNode{
-    
-};
-template<typename T>
-class Trie{
-    bool update(T td){
-        while(!td.is_end()){
-            auto g = getnext
-        }
-    }
-};

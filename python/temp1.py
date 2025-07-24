@@ -1,11 +1,10 @@
-
 from itertools import tee, combinations
 from heapq import heappush, heappop
 from collections import defaultdict, Counter, deque
 from sys import stdout
 import math
 import sys
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(100000) # 100000 -> 130MB and 300000 -> exceed 256MB
 def printf(*args):
     print(*args)
     stdout.flush()
@@ -40,6 +39,8 @@ else:
         return list(map(float, input().split()))
     def getstr():
         return input()
+    def getstrs():
+        return input().split()
 
 inf = float('inf')
     
@@ -72,7 +73,7 @@ class groupby:
             self.currkey = self.keyfunc(self.currvalue)
 
 def pairwise(iterable): a, b = tee(iterable); next(b, None); return zip(a, b)
-
+import itertools
 def bisect_left(a, x, lo=0, hi=None, *, key=None):
     if lo < 0:
         raise ValueError('lo must be non-negative')
@@ -96,66 +97,74 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
 def gcd(a, b): return gcd(b%a, a) if a != 0 else b
 def sgn(x): return (x>0) - (x<0)
 from functools import lru_cache
-def inv(a):
-    cnt = 0
-    for i in range(len(a)):
-        for j in range(i):
-            if a[j] > a[i]:
-                cnt+=1
-    return cnt
-def test():
-    import random
-    for i in range(10000):
-        a, b, r = random.randint(1, 15), random.randint(1, 15), random.randint(1, 15)
-        answer(1,2,3)
-        break
-        #if answer(a, b, r)[0] != answer1(a, b, r)[0]:
-        #    print('a', answer(a, b, r), answer1(a, b, r))
-        #    print(a, b, r)
-        #    break
-def answer1(a, b, r):
-    ans = inf
-    ansi = inf
-    for i in range(r+1):
-        if abs((a^i) - (b^i)) < ans:
-            ans = abs((a^i) - (b^i))
-            ansi = i
-    return ans, ansi
-def answer(a, b, r):
-    a, b, r = [12,2,9]
-    k = 1
-    while (k << 1) < r:
-        k <<= 1
-    ans = 0
-    while k:
-        if (a & k == k) and (b & k == k):
-            k >>= 1
-            continue
-        elif (a & k == 0) and (b & k == 0):
-            k >>= 1
-            continue
-        elif ans + k <= r:
-            print('pre', abs((a ^ (ans + k)) - (b ^ (ans + k))))
-            print(abs((a ^ (ans)) - (b ^ ans)))
-            print(ans, k)
-            if abs((a ^ (ans + k)) - (b ^ (ans + k))) < abs((a ^ (ans)) - (b ^ ans)):
-                ans += k
-        k >>= 1
-    gr = answer1(a, b, r)[1]
-    print(answer1(a, b, r))
-    print('gr', gr)
-    print(abs((a^gr) - (b^gr)))
-    print(abs((a^r) - (b^r)))
-    return abs((a ^ (ans)) - (b ^ ans)), ans
-        
-        
+from itertools import product, permutations
+
+class BIT:
+    def __init__(self, n):
+        # valid input: [0, n]
+        self.sums = [0] * (n+3)
     
+    def update(self, i, delta):
+        # update >=i with delta
+        i += 2
+        while i < len(self.sums):
+            self.sums[i] += delta
+            i += i & (-i)
+    def _query(self, i):
+        # get (0, i]
+        i += 2
+        res = 0
+        while i > 0:
+            res += self.sums[i]
+            i -= i & (-i)
+        return res
+    
+    def query(self, i, j =None):
+        # [0, i] or [i, j]
+        if j == None:
+            return self._query(i)
+        else:
+            assert j >= i
+            return self._query(j) - self._query(i-1)
+        
+    def update_interval(self, a, b, delta):
+        # update [b, a]
+        self.update(a+1, -delta)
+        self.update(b, delta)
+    
+def popcount(a): return bin(a).count('1')
+
+def ctz(a):
+    assert a > 0, a
+    res = 0
+    while a & 1 == 0:
+        res += 1
+        a >>= 1
+    return res
+
+def __lg(a):
+    assert a > 0, a
+    while a & (-a) != a:
+        a -= a & (-a)
+    return ctz(a)
+from itertools import zip_longest
+def answer():
+    ans = 0
+    for i in range(1, 13):
+        s = getstr()
+        ans += len(s) == i
+    print(ans)
+    
+            
+    
+    
+        
+DOT = 0
 T = 1
-#T = getint()
+if DOT:
+    T = getint()
 for i in range(T):
-    test()
-    q = None
-    #q = answer()
+    q = answer()
     if q != None:
         if q:
             print('Yes')

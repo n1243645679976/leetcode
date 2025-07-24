@@ -13,11 +13,15 @@ void __print(char x) {cout << '\'' << x << '\'';}
 void __print(const char *x) {cout << '\"' << x << '\"';}
 void __print(const string &x) {cout << '\"' << x << '\"';}
 void __print(bool x) {cout << (x ? "true" : "false");}
+template<typename T, const long long unsigned int n>
+void __print(const array<T, n> &x){int f = 0; cout << '{'; for (int i=0;i<n;i++) cout << (i ? ", " : ""), __print(x[i]); cout << "}";}
 
 template<typename T, typename V>
 void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
 template<typename T>
 void __print(const T &x) {int f = 0; cout << '{'; for (auto &i: x) cout << (f++ ? ", " : ""), __print(i); cout << "}";}
+template<typename T, typename V>
+void __print(map<T, V>& x) {int f = 0; cout << '{'; for(auto& x:x) {cout << (f++ ? ", " : ""); __print(x.first); cout << " : "; __print(x.second);} cout << '}';}
 void _print() {cout << "]\n";}
 void _println() {}
 template <typename T, typename... V>
