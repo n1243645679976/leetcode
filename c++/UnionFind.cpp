@@ -55,7 +55,7 @@ struct UnionFindW{
     }
     // weight[y] - weight[x] = w, x -> y = w
     // 轉換為px -> py, 加px -> x, y -> py, 就是 + weight[x] - weight[y]
-    bool merge(int x, int y, int w){
+    bool unite(int x, int y, int w){
         w += weight(x), w -= weight(y);
         x = find(x), y = find(y);
         if(x == y) return weight(y) - weight(x) == w;
@@ -65,11 +65,12 @@ struct UnionFindW{
         diff_weight[y] = w;
         return true;
     }
-}
+};
+
 struct UnionFindLn {
     vector<int> par;
     vector<int> size;
-    UnionFindLn(int N) : par(N), size(N) {
+    UnionFindLn(int N, vc<ll> a) : par(N), size(N){
         for(int i = 0; i < N; i++) par[i] = i, size[i] = 1;
     }
     int find(int x) {
@@ -78,6 +79,20 @@ struct UnionFindLn {
       }
       return x;
     }
+    inline int get_leftmost_in_group(int x){
+      int lx = find(x);
+      return lx;
+    }
+    inline int get_rightmost_in_group(int x){
+      int lx = find(x);
+      return lx + size[lx] - 1;
+    }
+    inline int get_rightmost_in_left_group(int x){
+      return get_leftmost_in_group(x) - 1;
+    }
+    inline int get_leftmost_in_right_group(int x){
+      return get_rightmost_in_group(x) + 1;
+    }
     array<int, 2> get_left_right(int x){ // not tested
       int lx = find(x);
       return {lx, lx + size[lx] - 1};
@@ -85,6 +100,7 @@ struct UnionFindLn {
     bool unite(int left, int right) {
         int lleft = find(left);
         int lright = find(right);
+        if(lleft > lright) swap(lleft, lright);
         if (lleft == lright) return false;
         size[lleft] += size[lright];
         par[lright] = lleft;

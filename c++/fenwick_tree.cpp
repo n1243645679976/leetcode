@@ -19,8 +19,10 @@ public:
         }
     }
     long long query(int i){
+        // [0, i)
         long long ans = 0;
         i += offset;
+        i--;
         while(i > 0){
             ans += c[i];
             i -= i & (-i);
