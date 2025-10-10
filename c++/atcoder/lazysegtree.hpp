@@ -76,6 +76,7 @@ struct lazy_segtree {
 
 #else
 
+
 template <class S,
           S (*op)(S, S),
           S (*e)(),

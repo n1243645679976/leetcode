@@ -161,7 +161,7 @@ template <class S, S (*op)(S, S), S (*e)()> struct segtree {
         return 0;
     }
 
-  private:
+  public:
     int _n, size, log;
     std::vector<S> d;
 
@@ -171,3 +171,6 @@ template <class S, S (*op)(S, S), S (*e)()> struct segtree {
 }  // namespace atcoder
 
 #endif  // ATCODER_SEGTREE_HPP
+// 1. exclude r
+// 2. max_right(r, bool f(S x)) -> true, true, ..., false, false
+// 3. min_left(l, bool f(S x)) -> true, true, ..., false, false

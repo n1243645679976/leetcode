@@ -26,20 +26,5 @@ namespace LCA{
 			per(i, 19, -1) if(par[p][i] != par[q][i]) p = par[p][i], q = par[q][i];
 			return par[p][0];
 		}
-		ints2 lcaM(int p, int q){ 
-			// return: lca, lca_down from lower one if in subtree or from p
-			if(p == q) return {p, -1};
-			if(depth[q] < depth[p]) swap(q, p);
-			int diff = depth[q] - depth[p] - 1, b = 0;
-			if(depth[q] != depth[p]) while(diff){
-				if(diff & 1) q = par[q][b];
-				diff>>=1;
-				b++;
-			}
-			if(par[q][0] == p) return {par[q][0], q};
-			q = par[q][0];
-			per(i, 19, -1) if(par[p][i] != par[q][i]) p = par[p][i], q = par[q][i];
-			return {par[p][0], p};
-		}
 	};
 }

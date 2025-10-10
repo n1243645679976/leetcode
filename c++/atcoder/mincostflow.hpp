@@ -7,8 +7,54 @@
 #include <queue>
 #include <vector>
 
-#include "atcoder/internal_csr"
-#include "atcoder/internal_queue"
+
+namespace atcoder {
+namespace internal {
+
+template <class E> struct csr {
+    std::vector<int> start;
+    std::vector<E> elist;
+    explicit csr(int n, const std::vector<std::pair<int, E>>& edges)
+        : start(n + 1), elist(edges.size()) {
+        for (auto e : edges) {
+            start[e.first + 1]++;
+        }
+        for (int i = 1; i <= n; i++) {
+            start[i] += start[i - 1];
+        }
+        auto counter = start;
+        for (auto e : edges) {
+            elist[counter[e.first]++] = e.second;
+        }
+    }
+};
+
+}  // namespace internal
+
+}  // namespace atcoder
+
+namespace atcoder {
+
+namespace internal {
+
+template <class T> struct simple_queue {
+    std::vector<T> payload;
+    int pos = 0;
+    void reserve(int n) { payload.reserve(n); }
+    int size() const { return int(payload.size()) - pos; }
+    bool empty() const { return pos == int(payload.size()); }
+    void push(const T& t) { payload.push_back(t); }
+    T& front() { return payload[pos]; }
+    void clear() {
+        payload.clear();
+        pos = 0;
+    }
+    void pop() { pos++; }
+};
+
+}  // namespace internal
+
+}  // namespace atcoder
 
 namespace atcoder {
 

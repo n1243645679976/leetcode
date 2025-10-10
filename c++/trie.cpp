@@ -1,46 +1,67 @@
+
+
 namespace chh{
-    const int INPUT_END = -1, NOT_FOUND = -1;
-    template<class DATA,
-             class INPUT,
-             class OUTPUT,
-             int DICT_SIZE, 
-             int getkey(INPUT&, int), 
-             void apply_route(DATA&, bool), 
-             void aggregate_route(DATA&, OUTPUT&, bool),
-             OUTPUT (*found_fail)()>
-    class Trie{
+    int trie_op_bith2l(int& a, int i){return i > 31 ? -1 : ((a >> (31-i)) & 1);}
+    int trie_op_bitl2h(int& a, int i){return i > 31 ? -1 : ((a >> i) & 1);}
+    int trie_op_lstr(string& a, int i){return i >= a.size() ? -1 : a[i] - 97;}
+    int trie_op_str(string& a, int i){return i >= a.size() ? -1 : (a[i] - 65) - 6 * (a[i] >= 97);}
+    template<typename T, int ALPHALEN, int (*op)(T&, int)>
+    class Trie {
     public:
-        class TrieNode{
-        public:
-            vector<int> next;
-            DATA data;
-            TrieNode() : next(DICT_SIZE, -1) {}
+        struct TrieNode{
+            long long is_end = 0;
+            long long cnt = 0;
+            array<int, ALPHALEN> child;
+            TrieNode(){memset(&child[0], -1, ALPHALEN * sizeof(int));}
         };
-        vector<TrieNode> nodes;
-        Trie() : nodes(1) {}
-        void insert(INPUT& a){
-            int i = 0, key = getkey(a, i), node = 0;
-            while(key != INPUT_END){
-                if(nodes[node].next[key] == -1) nodes[node].next[key] = nodes.size(), nodes.push_back(TrieNode());
-                node = nodes[node].next[key];
-                apply_route(nodes[node].data, 0);
-                key = getkey(a, ++i);
+        vector<TrieNode> data;
+        Trie() : data(1, TrieNode()){}
+
+        void insert(T& word) {
+            int node = 0, ind = 0;
+            while(true){
+                int nnode = op(word, ind++);
+                if(nnode == -1) break;
+                if(data[node].child[nnode] == -1) data[node].child[nnode] = data.size(), data.push_back(TrieNode());
+                node = data[node].child[nnode];
+                data[node].cnt++;
             }
-            apply_route(nodes[node].data, 1);
+            data[node].is_end++;
         }
-        OUTPUT search(INPUT& a){
-            int i = 0, key = getkey(a, i), node = 0;
-            OUTPUT o = OUTPUT();
-            while(key != INPUT_END){
-                node = nodes[node].next[key];
-                if(node == NOT_FOUND) {
-                    return found_fail();
-                }
-                aggregate_route(nodes[node].data, o, 0);
-                key = getkey(a, ++i);
+        void erase(T word) {
+            int node = 0, ind = 0;
+            while(true){
+                int nnode = op(word, ind++);
+                if(nnode == -1) break;
+                assert(data[node].child[nnode] != -1);
+                node = data[node].child[nnode];
+                data[node].cnt--;
             }
-            aggregate_route(nodes[node].data, o, 1);
-            return o;
+            data[node].is_end--;
+        }
+        int startsWith(T prefix) {
+            int node = 0, ind = 0;
+            while(true){
+                int nnode = op(prefix, ind++);
+                if(nnode == -1) break;
+                node = data[node].child[nnode];
+                if(node == -1) return false;
+            }
+            return data[node].cnt;
+        }
+        int search(T word) {
+            int node = 0, ind = 0;
+            while(true){
+                int nnode = op(word, ind++);
+                if(nnode == -1) break;
+                node = data[node].child[nnode];
+                if(node == -1) return 0;
+            }
+            return data[node].is_end;
         }
     };
+    using LStringTrie = Trie<string, 26, trie_op_lstr>;
+    using StringTrie = Trie<string, 52, trie_op_str>;
+    using BitH2LTrie = Trie<int, 32, trie_op_bith2l>;
+    using BitL2HTrie = Trie<int, 32, trie_op_bitl2h>;
 }

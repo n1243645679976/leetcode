@@ -334,3 +334,46 @@ std::vector<long long> convolution_ll(const std::vector<long long>& a,
 }  // namespace atcoder
 
 #endif  // ATCODER_CONVOLUTION_HPP
+
+
+// higher bound conv to MOD1 * MOD2 * MOD3, modding with MODD
+std::vector<int> convolution_int128(const std::vector<int>& a,
+                                      const std::vector<int>& b, int MODD) {
+    int n = int(a.size()), m = int(b.size());
+    if (!n || !m) return {};
+
+    static constexpr unsigned long long MOD1 = 754974721;  // 2^24
+    static constexpr unsigned long long MOD2 = 167772161;  // 2^25
+    static constexpr unsigned long long MOD3 = 469762049;  // 2^26
+    static constexpr unsigned long long M2M3 = MOD2 * MOD3;
+    static constexpr unsigned long long M1M3 = MOD1 * MOD3;
+    static constexpr unsigned long long M1M2 = MOD1 * MOD2;
+    static constexpr unsigned long long M1M2M3 = MOD1 * MOD2 * MOD3;
+
+    static constexpr unsigned long long i1 =
+        internal::inv_gcd(MOD2 * MOD3, MOD1).second;
+    static constexpr unsigned long long i2 =
+        internal::inv_gcd(MOD1 * MOD3, MOD2).second;
+    static constexpr unsigned long long i3 =
+        internal::inv_gcd(MOD1 * MOD2, MOD3).second;
+    static constexpr int MAX_AB_BIT = 24;
+    static_assert(MOD1 % (1ull << MAX_AB_BIT) == 1, "MOD1 isn't enough to support an array length of 2^24.");
+    static_assert(MOD2 % (1ull << MAX_AB_BIT) == 1, "MOD2 isn't enough to support an array length of 2^24.");
+    static_assert(MOD3 % (1ull << MAX_AB_BIT) == 1, "MOD3 isn't enough to support an array length of 2^24.");
+    assert(n + m - 1 <= (1 << MAX_AB_BIT));
+
+    auto c1 = convolution<MOD1>(a, b);
+    auto c2 = convolution<MOD2>(a, b);
+    auto c3 = convolution<MOD3>(a, b);
+    __int128 M1M2M3_128 = __int128(M1M2) * MOD3;
+    std::vector<int> c(n + m - 1);
+    for (int i = 0; i < n + m - 1; i++) {
+        __int128 x = 0;
+        x += __int128(c1[i]) * i1 * M2M3;
+        x += __int128(c2[i]) * i2 * M1M3;
+        x += __int128(c3[i]) * i3 * M1M2;
+        c[i] = x % M1M2M3_128 % MODD;
+    }
+
+    return c;
+}

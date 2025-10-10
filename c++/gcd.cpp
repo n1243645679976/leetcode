@@ -13,6 +13,9 @@ int egcd(int a, int b, int& resa, int& resb){
     return gcd;
 }
 int CRT(int n1, int n2, int a1, int a2){
+    // K % n1 = a1
+    // K % n2 = a2
+    //  return K
     int m1, m2;
     egcd(n1, n2, m1, m2);
     int x = a1 * m2 * n2 + a2 * m1 * n1;
