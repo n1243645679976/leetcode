@@ -1,29 +1,30 @@
-
+#include "mint.cpp"
 template<typename T>
 class Poly{
-  vector<T> bernoulli(1);
-  vector<T> A(1);
-  int prevnotused = 0;
+    vector<int> powers;
+    Poly(vector<int>& p) : powers(p) {}
+    void discrete_integration(){
+        // n -> (n+1) * n / 2
+        // sum(n) from 1 to 100 -> 
+        vector<int> new_powers(powers.size() + 1);
+        if (n <= 0) return 0;
+        mh.build_bernoulli(p+1);
+        T inner_sum = 0, n_T = n;
+        for (int j = 0; j <= p; ++j) {
+            new_powers[p + 1 - j] = mh.C(p + 1, j) * mh.bernoulli[j];
+        }
+        return inner_sum / T(p + 1);
+    }
+
   // Akiyama–Tanigawa algorithm
-  void compute_bernoulli(int k) {
-      if(k < prevnotused) return ;
-      bernoulli.resize(k+1); A.resize(k+1);
-      for (int m = prevnotused; m <= k; ++m) {
-          A[m] = T(1) / T(m + 1);
-          for (int j = m; j >= 1; --j)
-              A[j - 1] = (A[j - 1] - A[j]) * T(j);
-          bernoulli[m] = A[0];
-      }
-      prevnotused = k + 1;
-  }
-  T sum_of_powers(int p, int n) {
+  T sum_of_powers(int p, int n, minthelper& mh) {
       if (n <= 0) return 0;
-      compute_bernoulli(p+1);
+      mh.build_bernoulli(p+1);
       T inner_sum = 0, n_T = n;
       for (int j = 0; j <= p; ++j) {
-          inner_sum += C(p + 1, j) * bernoulli[j] * std::pow(n_T, p + 1 - j);
+          inner_sum += mh.C(p + 1, j) * mh.bernoulli[j] * n_T.pow(p + 1 - j);
       }
-      return inner_sum / static_cast<T>(p + 1);
+      return inner_sum / T(p + 1);
   }
   T calculate_polynomial_sum(const std::vector<int>& powers, int upperbound, int lowerbound) {
     T total_sum = 0;

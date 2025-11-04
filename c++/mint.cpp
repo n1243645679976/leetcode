@@ -21,3 +21,29 @@ struct mint {
 };
 typedef mint<1000000007> mint17;
 typedef mint<998244353> mint99;
+template<typename T>
+struct minthelper{
+  vector<T> fact, ifact;
+  vector<T> bernoulli;
+  vector<T> A;
+  void build_facts(int k){
+    if(!fact.size()) fact.push_back(T(1)), ifact.push_back(T(1));
+    while(k >= fact.size()) fact.push_back(fact.size() * fact.back()), ifact.push_back(ifact.back() / ifact.size());
+  }
+  // Akiyama–Tanigawa algorithm
+  void build_bernoulli(int k) {
+      if(k < bernoulli.size()) return ;
+      bernoulli.resize(k+1); A.resize(k+1);
+      for (int m = bernoulli.size(); m <= k; ++m) {
+          A[m] = T(1) / T(m + 1);
+          for (int j = m; j >= 1; --j)
+              A[j - 1] = (A[j - 1] - A[j]) * T(j);
+          bernoulli[m] = A[0];
+      }
+      prevnotused = k + 1;
+  }
+  T C(int a, int b){
+    assert(a >= b);
+    return fact[a] * ifact[b] * ifact[a - b];
+  }
+};
