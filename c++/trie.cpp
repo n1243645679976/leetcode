@@ -1,4 +1,5 @@
 
+
 namespace chh{
     int trie_op_bith2l(int& a, int i){return i > 31 ? -1 : ((a >> (31-i)) & 1);}
     int trie_op_bitl2h(int& a, int i){return i > 31 ? -1 : ((a >> i) & 1);}

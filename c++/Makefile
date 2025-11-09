@@ -14,16 +14,6 @@ temp1: temp1.cpp
 	$(CXX) $(CXXFLAGS) temp1.cpp -o ./temp1 -DLOCAL
 	temp1 < test.txt
 
-temppy: temp.py
-	python temp.py < test.txt
-
-ans: $(TARGET)
-	$(TARGET) < test.txt > out.txt
-	fc .\out.txt .\ans.txt
-
-ml: tempml
-	./temp < test.txt
-
 check: all
 	python t_generate_test.py > test.txt
 	python temp.py < test.txt > a.txt
