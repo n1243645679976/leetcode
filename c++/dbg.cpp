@@ -20,6 +20,8 @@ template<typename T, typename V>
 void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
 template<typename T>
 void __print(const vector<T> &x) {int f = 0; cout << '{'; for (auto &i: x) cout << (f++ ? ", " : ""), __print(i); cout << "}";}
+template<typename T, typename U>
+void __print(const map<T, U> &x) {int f = 0; cout << '{'; for (auto [k, v]: x) {cout << (f++ ? ", " : ""), __print(k); cout<<':';  __print(v);} cout << "}";}
 template<typename T>
 void __print(vector<T> &x) {int f = 0; cout << '{'; for (auto &i: x) cout << (f++ ? ", " : ""), __print(i); cout << "}";}
 void _print() {cout << "]\n";}
@@ -28,4 +30,4 @@ template <typename T, typename... V>
 void _print(T t, V... v) {__print(t); if (sizeof...(v)) cout << ", "; _print(v...);}
 template <typename T, typename... V>
 void _println(T t, V... v) {__print(t); if (sizeof...(v)) cout << " "; _println(v...);}
-#define dbg(x...) cout << "\e[91m"<<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;    
+#define dbg(x...) cout << "\e[91m"<< __FILE__<<":"<<__LINE__ <<"," <<__func__<<" [" << #x << "] = ["; _print(x); cout << "\e[39m" << endl;    

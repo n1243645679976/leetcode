@@ -5,20 +5,10 @@ TARGET = temp
 SRCS = temp.cpp
 OBJS = $(SRCS:.cpp=.o)
 
-all: $(TARGET)
-	$(TARGET) < test.txt
-
-ans: $(TARGET)
-	$(TARGET) < test.txt > out.txt
-	fc .\out.txt .\ans.txt
-
-ml: tempml
-	temp < test.txt
-
 
 temp: $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ -DLOCAL
-	temp < test.txt
+	./temp < test.txt
 
 temp1: temp1.cpp
 	$(CXX) $(CXXFLAGS) temp1.cpp -o ./temp1 -DLOCAL
@@ -26,6 +16,13 @@ temp1: temp1.cpp
 
 temppy: temp.py
 	python temp.py < test.txt
+
+ans: $(TARGET)
+	$(TARGET) < test.txt > out.txt
+	fc .\out.txt .\ans.txt
+
+ml: tempml
+	./temp < test.txt
 
 check: all
 	python t_generate_test.py > test.txt
