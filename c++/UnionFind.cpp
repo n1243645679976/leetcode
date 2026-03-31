@@ -28,6 +28,47 @@ struct UnionFind {
 
 
 // weight[x]箭頭一律由parent -> x (diff = 後減前)
+// struct UnionFindW{
+//     vector<int> par;
+//     vector<int> size;
+//     vector<int> diff_weight;
+//     UnionFindW(int N) : par(N), size(N, 1), diff_weight(N) {
+//         for(int i=0;i<N;i++) par[i] = i;
+//     }
+//     int find(int x){
+//         if(par[x] == x) return x;
+//         else{
+//             int px = find(par[x]);
+//             // par[x] -> x的weight改成px -> x, 就加上px -> par[x]就好了
+//             diff_weight[x] += diff_weight[par[x]];
+//             return par[x] = px;
+//         }
+//     }
+//     int weight(int x){
+//         find(x);
+//         return diff_weight[x];
+//     }
+//     int diff(int x, int y){
+//         assert(find(x) == find(y));
+//         // y - x
+//         return diff_weight[y] - diff_weight[x];
+//     }
+//     // weight[y] - weight[x] = w, x -> y = w
+//     // 轉換為px -> py, 加px -> x, y -> py, 就是 + weight[x] - weight[y]
+//     bool unite(int x, int y, int w){
+//         w += weight(x), w -= weight(y);
+//         x = find(x), y = find(y);
+//         if(x == y) return weight(y) - weight(x) == w;
+//         if(size[x] < size[y]) swap(x, y), w = -w;
+//         par[y] = x;
+//         size[x] += size[y];
+//         diff_weight[y] = w;
+//         return true;
+//     }
+// };
+
+
+// weight[x]箭頭一律由parent -> x (diff = 後減前)
 struct UnionFindW{
     vector<int> par;
     vector<int> size;
@@ -40,7 +81,7 @@ struct UnionFindW{
         else{
             int px = find(par[x]);
             // par[x] -> x的weight改成px -> x, 就加上px -> par[x]就好了
-            diff_weight[x] += diff_weight[par[x]];
+            diff_weight[x] = op(diff_weight[x], diff_weight[par[x]]);
             return par[x] = px;
         }
     }
@@ -51,20 +92,22 @@ struct UnionFindW{
     int diff(int x, int y){
         assert(find(x) == find(y));
         // y - x
-        return diff_weight[y] - diff_weight[x];
+        return op(diff_weight[y], inv(diff_weight[x]));
     }
     // weight[y] - weight[x] = w, x -> y = w
     // 轉換為px -> py, 加px -> x, y -> py, 就是 + weight[x] - weight[y]
     bool unite(int x, int y, int w){
-        w += weight(x), w -= weight(y);
+        w = op(w, weight(x)), w = op(w, inv(weight(y)));
         x = find(x), y = find(y);
-        if(x == y) return weight(y) - weight(x) == w;
-        if(size[x] < size[y]) swap(x, y), w = -w;
+        if(x == y) return op(y, inv(x)) == w;
+        if(size[x] < size[y]) swap(x, y), w = inv(w);
         par[y] = x;
         size[x] += size[y];
         diff_weight[y] = w;
         return true;
     }
+    int inv(int x){return -x;} //xor: {return x;}
+    int op(int x, int y){return x+y;} //xor: {return x ^ y;}
 };
 
 struct UnionFindLn {
