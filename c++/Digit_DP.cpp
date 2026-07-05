@@ -71,7 +71,7 @@ class Digit_DP{
   }
 public:
   Digit_DP(STATE_TYPE EACH_STATE_MAX_DIM, int NUM_LENGTH) : dims(EACH_STATE_MAX_DIM), string_len(NUM_LENGTH) {
-    offset[NUM_STATE-1] = _string_len * 4;
+    offset[NUM_STATE-1] = NUM_LENGTH * 4;
     for(int i=dims.size()-1;i>0;i--) offset[i-1] = offset[i] * dims[i];
   }
   OUTPUT_TYPE run(string& s, STATE_TYPE state = e(), int tight = 1, int lz = 1, int ind = 0, int dbg_ind=-1, int entry = 1){
