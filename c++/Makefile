@@ -1,46 +1,22 @@
 CXX = g++
-CXXFLAGS =  -I. -Wall -Wextra -Wconversion -static -DLOCAL -Wl,--stack=268435456 -O2 -std=c++20
+CXXFLAGS = -I. -Wall -Wextra -Wconversion -O2 -std=c++20 -DLOCAL
+LDFLAGS = -static -Wl,--stack=268435456
+
 TARGET = temp
 
 SRCS = temp.cpp
 OBJS = $(SRCS:.cpp=.o)
 
+all: $(TARGET)
 
-temp: $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ -DLOCAL
-	./temp < test.txt
-
-temp1: temp1.cpp
-	$(CXX) $(CXXFLAGS) temp1.cpp -o ./temp1 -DLOCAL
-	temp1 < test.txt
-
-check: all
-	python t_generate_test.py > test.txt
-	python temp.py < test.txt > a.txt
-	$(TARGET) < test.txt > b.txt
-	fc .\a.txt .\b.txt
-test: $(TARGET)
-	python t_generate_test.py > test.txt
-	$(TARGET) < test.txt
-
-
-diff: temp temp1 test.txt
-	temp < test.txt > output_temp.txt
-	temp1 < test.txt > output_temp1.txt
-	fc output_temp.txt output_temp1.txt
-
-input: $(TARGET)
-	$(TARGET)
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+	temp.exe < test.txt
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# 用于检查.cpp文件是否有更改的规则
-$(OBJS): $(SRCS)
-	$(CXX) -MMD -MP $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 -include $(OBJS:.o=.d)
 
-.PHONY: clean
 clean:
-	rm -f $(OBJS) $(OBJS:.o=.d) $(TARGET) tempml temp1 out.txt
+	rm -f $(TARGET) $(OBJS) $(OBJS:.o=.d)
