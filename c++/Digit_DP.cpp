@@ -11,7 +11,9 @@
 //   cout<<ddp.run(s) - 1<<endl;
 
 /*
-  Digit_DP(max size of each state as array<int, N>, number_length)
+  Digit_DP<NUM_STATE, OUTPUT_TYPE, e, next_state, cal_state, maxdigit> ddp(array<int, NUM_STATE> EACH_STATE_MAX_DIM, NUM_LENGTH);
+
+  (max size of each state as array<int, N>, number_length)
   ddp.run(string num) to calculate 0 ~ num
   ddp.debug() output the state and output of each number from 0 to 10 and 0 to 100:
     0:{0,0,0} 1,    1:{1,0,2} 0,    2:{2,0,4} 0,    3:{0,1,8} 0,    4:{1,0,16} 0,
@@ -46,25 +48,18 @@ template<size_t NUM_STATE,
         OUTPUT_TYPE (*cal_state)(array<int, NUM_STATE>),
         int maxdigit = 9>
 class Digit_DP{
-  using state_type = array<int, NUM_STATE>;
+  using STATE_TYPE = array<int, NUM_STATE>;
   const static int SZ = 13000000;
   const static int dbgSZ = 300;
-  state_type dims;
-  state_type offset;
-  int alloffset;
-  state_type tmpT[dbgSZ];
-  vector<int> dbg_inds;
-  OUTPUT_TYPE dp[SZ];
+  STATE_TYPE dims;
+  STATE_TYPE offset;
   bool seen[SZ];
-  int tight_ind;
+  OUTPUT_TYPE dp[SZ];
+  vector<int> dbg_inds;
+  STATE_TYPE tmpT[dbgSZ];
   int string_len;
   set<int> used_index;
-  Digit_DP(state_type _dims, int _string_len) : dims(_dims), string_len(_string_len) {
-    offset[NUM_STATE-1] = _string_len * 4;
-    for(int i=dims.size()-1;i>0;i--) offset[i-1] = offset[i] * dims[i];
-    alloffset = offset[0] * dims[0];
-  }
-  int to_index(state_type& g, int tight, int lz, int ind){
+  int to_index(STATE_TYPE& g, int tight, int lz, int ind){
     int index = 0;
     for(int i=0;i<NUM_STATE;i++) index += offset[i] * g[i];
     index += string_len * 2 * tight + string_len * lz + ind;
@@ -75,7 +70,11 @@ class Digit_DP{
     for(auto ind:used_index) seen[ind] = 0; used_index.clear();
   }
 public:
-  OUTPUT_TYPE run(string& s, state_type state = e(), int tight = 1, int lz = 1, int ind = 0, int dbg_ind=-1, int entry = 1){
+  Digit_DP(STATE_TYPE EACH_STATE_MAX_DIM, int NUM_LENGTH) : dims(EACH_STATE_MAX_DIM), string_len(NUM_LENGTH) {
+    offset[NUM_STATE-1] = _string_len * 4;
+    for(int i=dims.size()-1;i>0;i--) offset[i-1] = offset[i] * dims[i];
+  }
+  OUTPUT_TYPE run(string& s, STATE_TYPE state = e(), int tight = 1, int lz = 1, int ind = 0, int dbg_ind=-1, int entry = 1){
     // ans of [0, s]
     if(entry) clear();
     if(ind == s.size()){
