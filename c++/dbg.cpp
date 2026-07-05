@@ -13,9 +13,10 @@ void __print(char x) {cout << '\'' << x << '\'';}
 void __print(const char *x) {cout << '\"' << x << '\"';}
 void __print(const string &x) {cout << '\"' << x << '\"';}
 void __print(bool x) {cout << (x ? "true" : "false");}
+void __print(__int128 out){if(out < 0) {cout<<"-"; __print(-out);} else {if(out > 9) __print(out/10); cout<< int(out%10);}}
 template<typename T> void __print(T x) {cout<<x;}
 template<typename T, size_t N>
-void __print(const array<T, N> &a){cout<<"{"; for(int i=0;i<N;i++) cout<<(i == 0 ? "": ", ")<<a[i]; cout<<"}";}
+void __print(const array<T, N> &a){cout<<"{"; for(int i=0;i<N;i++) cout<<(i == 0 ? "": ", "), __print(a[i]); cout<<"}";}
 template<typename T, typename V>
 void __print(const pair<T, V> &x) {cout << '{'; __print(x.first); cout << ", "; __print(x.second); cout << '}';}
 template<typename T>
