@@ -1,6 +1,6 @@
 // solve: https://atcoder.jp/contests/abc465/tasks/abc465_e
 //   array<int, 3> e(){return {0, 0, 0};}
-//   array<int, 3> next_state(array<int, 3> now, int ntight, int nlz, int d){
+//   array<int, 3> next_state(array<int, 3> now, int plz, int nlz, int d){
 //     auto [mod, c3, dec] = now;
 //     return {(mod+d)%3, c3 || (d == 3), nlz ? 0 : dec | (1 << d)};
 //   }
@@ -43,9 +43,9 @@
 */
 template<size_t NUM_STATE,
         typename OUTPUT_TYPE,
-        array<int, NUM_STATE> (*e)(),
-        array<int, NUM_STATE> (*next_state)(array<int, NUM_STATE>, int plz, int nlz, int d), 
-        OUTPUT_TYPE (*cal_state)(array<int, NUM_STATE>),
+        array<int, NUM_STATE> (*e)(), // initial
+        array<int, NUM_STATE> (*next_state)(array<int, NUM_STATE> now_state, int plz, int nlz, int d),  // now_state * (plz, nlz, d) -> next_state
+        OUTPUT_TYPE (*cal_state)(array<int, NUM_STATE> leaf_state), // leaf_state -> output
         int maxdigit = 9>
 class Digit_DP{
   using STATE_TYPE = array<int, NUM_STATE>;
